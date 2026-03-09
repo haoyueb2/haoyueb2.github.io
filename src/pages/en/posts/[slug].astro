@@ -1,0 +1,20 @@
+---
+import Layout from "../../../components/Layout.astro";
+import PostPage from "../../../components/PostPage.astro";
+import { getBlogEntries, getLocalizedSlug, getTranslatedEntry } from "../../../lib/blog";
+
+export async function getStaticPaths() {
+  const posts = await getBlogEntries("en");
+  return posts.map((entry) => ({
+    params: { slug: getLocalizedSlug(entry) },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const translatedEntry = await getTranslatedEntry(entry, "zh");
+---
+
+<Layout title={`${entry.data.title} | Haoyue Bai`} description={entry.data.description} locale="en">
+  <PostPage entry={entry} locale="en" translatedEntry={translatedEntry} />
+</Layout>

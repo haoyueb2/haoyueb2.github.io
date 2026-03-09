@@ -1,0 +1,45 @@
+---
+import Layout from "../components/Layout.astro";
+import PostList from "../components/PostList.astro";
+import { getBlogEntries, getPostsIndexPath, getAboutPath, getTagPath, getTags } from "../lib/blog";
+
+const locale = "zh";
+const posts = await getBlogEntries(locale);
+const latestPosts = posts.slice(0, 3);
+const tags = (await getTags(locale)).slice(0, 6);
+---
+
+<Layout title="Haoyue Bai | 中文博客" description="写作、笔记与项目归档" locale={locale}>
+  <section class="hero-panel">
+    <div>
+      <p class="eyebrow">Haoyue Bai</p>
+      <h1>写作、笔记与项目归档。</h1>
+      <p>
+        这是一个中英双语、Markdown-first 的个人博客。它优先服务于长期写作，而不是一次性的页面展示。
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a href={getPostsIndexPath(locale)}>进入文章列表</a>
+      <a href={getAboutPath(locale)}>了解这个站点</a>
+    </div>
+  </section>
+
+  <section class="mini-grid">
+    <div class="panel">
+      <p class="eyebrow">最新文章</p>
+      <h2>最近写了什么</h2>
+      <PostList posts={latestPosts} locale={locale} />
+    </div>
+    <div class="panel">
+      <p class="eyebrow">标签</p>
+      <h2>从主题开始浏览</h2>
+      <ul class="tag-list">
+        {tags.map((tag) => (
+          <li>
+            <a href={getTagPath(locale, tag)}>{tag}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

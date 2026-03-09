@@ -1,0 +1,67 @@
+---
+import "../styles/global.css";
+import type { Locale } from "../lib/blog";
+import { getAboutPath, getLocalizedPath, getPostsIndexPath, getRssPath } from "../lib/blog";
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+}
+
+const { title, description, locale } = Astro.props;
+
+const altLocale = locale === "zh" ? "en" : "zh";
+const nav = [
+  {
+    href: getLocalizedPath(locale),
+    label: locale === "zh" ? "首页" : "Home"
+  },
+  {
+    href: getPostsIndexPath(locale),
+    label: locale === "zh" ? "文章" : "Posts"
+  },
+  {
+    href: getAboutPath(locale),
+    label: locale === "zh" ? "关于" : "About"
+  },
+  {
+    href: getRssPath(locale),
+    label: "RSS"
+  }
+];
+---
+
+<!doctype html>
+<html lang={locale === "zh" ? "zh-CN" : "en"}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <a class="site-brand" href={getLocalizedPath(locale)}>
+          <span>Haoyue Bai</span>
+          <small>{locale === "zh" ? "写作、笔记与项目" : "Writing, notes, and projects"}</small>
+        </a>
+        <nav class="site-nav" aria-label={locale === "zh" ? "主导航" : "Primary"}>
+          {nav.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+          <a class="locale-chip" href={getLocalizedPath(altLocale)}>
+            {locale === "zh" ? "EN" : "中文"}
+          </a>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>{locale === "zh" ? "由 Astro 驱动，部署在 GitHub Pages。" : "Powered by Astro and deployed on GitHub Pages."}</p>
+      </footer>
+    </div>
+  </body>
+</html>

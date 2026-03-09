@@ -1,0 +1,16 @@
+---
+import Layout from "../../../components/Layout.astro";
+import PostList from "../../../components/PostList.astro";
+import { getBlogEntries } from "../../../lib/blog";
+
+const locale = "en";
+const posts = await getBlogEntries(locale);
+---
+
+<Layout title="Posts | Haoyue Bai" description="English posts" locale={locale}>
+  <section class="panel">
+    <p class="eyebrow">Posts</p>
+    <h1>All posts</h1>
+    <PostList posts={posts} locale={locale} />
+  </section>
+</Layout>

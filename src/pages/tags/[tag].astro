@@ -1,0 +1,25 @@
+---
+import Layout from "../../components/Layout.astro";
+import PostList from "../../components/PostList.astro";
+import { getBlogEntries, getTags } from "../../lib/blog";
+
+export async function getStaticPaths() {
+  const tags = await getTags("zh");
+  return tags.map((tag) => ({ params: { tag } }));
+}
+
+const tag = Astro.params.tag ?? "";
+const posts = (await getBlogEntries("zh")).filter((entry) => entry.data.tags.includes(tag));
+---
+
+<Layout title={`${tag} | 标签`} description={`标签 ${tag} 下的文章`} locale="zh">
+  <section class="panel">
+    <p class="eyebrow">Tag</p>
+    <h1>{tag}</h1>
+    {posts.length > 0 ? (
+      <PostList posts={posts} locale="zh" />
+    ) : (
+      <div class="empty-state">这个标签下还没有文章。</div>
+    )}
+  </section>
+</Layout>

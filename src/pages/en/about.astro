@@ -1,0 +1,22 @@
+---
+import Layout from "../../components/Layout.astro";
+
+const locale = "en";
+---
+
+<Layout title="About | Haoyue Bai" description="About this bilingual blog" locale={locale}>
+  <section class="panel">
+    <p class="eyebrow">About</p>
+    <h1>About this site</h1>
+    <p>
+      This blog is built with Astro, Markdown, and GitHub Pages, with a strong bias toward a lightweight writing and publishing flow.
+    </p>
+    <p>
+      It will hold long-form thinking, project notes, reading logs, and experiments around AI and products.
+    </p>
+    <p>
+      The old blog remains online as an archive:
+      <a class="text-link" href="https://haoyueb2.github.io/mooooon333.github.io/">Open the old site</a>
+    </p>
+  </section>
+</Layout>

@@ -1,0 +1,45 @@
+---
+import Layout from "../../components/Layout.astro";
+import PostList from "../../components/PostList.astro";
+import { getAboutPath, getBlogEntries, getPostsIndexPath, getTagPath, getTags } from "../../lib/blog";
+
+const locale = "en";
+const posts = await getBlogEntries(locale);
+const latestPosts = posts.slice(0, 3);
+const tags = (await getTags(locale)).slice(0, 6);
+---
+
+<Layout title="Haoyue Bai | English Blog" description="Writing, notes, and project logs" locale={locale}>
+  <section class="hero-panel">
+    <div>
+      <p class="eyebrow">Haoyue Bai</p>
+      <h1>Writing, notes, and project logs.</h1>
+      <p>
+        This is a bilingual, Markdown-first personal site designed for long-form publishing and a sustainable writing workflow.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <a href={getPostsIndexPath(locale)}>Browse posts</a>
+      <a href={getAboutPath(locale)}>About this site</a>
+    </div>
+  </section>
+
+  <section class="mini-grid">
+    <div class="panel">
+      <p class="eyebrow">Recent posts</p>
+      <h2>Latest writing</h2>
+      <PostList posts={latestPosts} locale={locale} />
+    </div>
+    <div class="panel">
+      <p class="eyebrow">Tags</p>
+      <h2>Browse by theme</h2>
+      <ul class="tag-list">
+        {tags.map((tag) => (
+          <li>
+            <a href={getTagPath(locale, tag)}>{tag}</a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

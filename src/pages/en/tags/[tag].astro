@@ -1,0 +1,25 @@
+---
+import Layout from "../../../components/Layout.astro";
+import PostList from "../../../components/PostList.astro";
+import { getBlogEntries, getTags } from "../../../lib/blog";
+
+export async function getStaticPaths() {
+  const tags = await getTags("en");
+  return tags.map((tag) => ({ params: { tag } }));
+}
+
+const tag = Astro.params.tag ?? "";
+const posts = (await getBlogEntries("en")).filter((entry) => entry.data.tags.includes(tag));
+---
+
+<Layout title={`${tag} | Tag`} description={`Posts tagged ${tag}`} locale="en">
+  <section class="panel">
+    <p class="eyebrow">Tag</p>
+    <h1>{tag}</h1>
+    {posts.length > 0 ? (
+      <PostList posts={posts} locale="en" />
+    ) : (
+      <div class="empty-state">No posts under this tag yet.</div>
+    )}
+  </section>
+</Layout>

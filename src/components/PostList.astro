@@ -1,0 +1,32 @@
+---
+import type { BlogEntry, Locale } from "../lib/blog";
+import { formatDate, getPostPath, getTagPath, getLocalizedSlug } from "../lib/blog";
+
+interface Props {
+  posts: BlogEntry[];
+  locale: Locale;
+}
+
+const { posts, locale } = Astro.props;
+---
+
+<div class="post-list">
+  {posts.map((post) => (
+    <article class="post-card">
+      <p class="post-date">{formatDate(post.data.date, locale)}</p>
+      <h2>
+        <a href={getPostPath(locale, getLocalizedSlug(post))}>{post.data.title}</a>
+      </h2>
+      <p class="post-description">{post.data.description}</p>
+      {post.data.tags.length > 0 && (
+        <ul class="tag-list" aria-label={locale === "zh" ? "标签" : "Tags"}>
+          {post.data.tags.map((tag) => (
+            <li>
+              <a href={getTagPath(locale, tag)}>{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+    </article>
+  ))}
+</div>

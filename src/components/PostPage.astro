@@ -1,0 +1,51 @@
+---
+import type { BlogEntry, Locale } from "../lib/blog";
+import {
+  formatDate,
+  getLocalizedSlug,
+  getPostPath,
+  getPostsIndexPath,
+  getTagPath,
+  localeLabels
+} from "../lib/blog";
+
+interface Props {
+  entry: BlogEntry;
+  locale: Locale;
+  translatedEntry?: BlogEntry;
+}
+
+const { entry, locale, translatedEntry } = Astro.props;
+const { Content } = await entry.render();
+const altLocale = locale === "zh" ? "en" : "zh";
+---
+
+<article class="post-page">
+  <a class="back-link" href={getPostsIndexPath(locale)}>
+    {locale === "zh" ? "← 返回文章列表" : "← Back to posts"}
+  </a>
+  <header class="post-hero">
+    <p class="post-date">{formatDate(entry.data.date, locale)}</p>
+    <h1>{entry.data.title}</h1>
+    <p class="post-description">{entry.data.description}</p>
+    <div class="post-meta-row">
+      {entry.data.tags.length > 0 && (
+        <ul class="tag-list" aria-label={locale === "zh" ? "标签" : "Tags"}>
+          {entry.data.tags.map((tag) => (
+            <li>
+              <a href={getTagPath(locale, tag)}>{tag}</a>
+            </li>
+          ))}
+        </ul>
+      )}
+      {translatedEntry && (
+        <a class="translation-link" href={getPostPath(altLocale, getLocalizedSlug(translatedEntry))}>
+          {locale === "zh" ? `View in ${localeLabels.en}` : `查看${localeLabels.zh}版本`}
+        </a>
+      )}
+    </div>
+  </header>
+  <div class="prose">
+    <Content />
+  </div>
+</article>
