@@ -1,0 +1,1670 @@
+<section class="hotel-matrix-page">
+  <section class="hero">
+    <h1>岘港酒店价格矩阵</h1>
+    <p class="sub">
+      时间口径按 <strong>2026-05-02 晚到</strong> 到 <strong>2026-05-07 下午离开</strong>。
+      这张表把这轮对话里提到过的酒店尽量并回一张总表：统一放 <strong>中文名 + 英文名 + 每天价格列 + 小红书信号 + 酒店外链</strong>。
+      价格优先来自 Trip 酒店详情页与 nearby properties；空白表示这轮没有抓到稳定的对应日期价格。
+    </p>
+    <div class="meta">
+      <span class="pill">目标预算：700-800 元/晚为主</span>
+      <span class="pill">推荐切法：优先看 2+3、1+4、1+1+3</span>
+      <span class="pill">星号 * 表示库存失真/高房型</span>
+      <span class="pill">波浪线 ~ 表示连住均价或推算值</span>
+      <span class="pill">小红书强/中/弱 = 证据强度，不是单次最高频</span>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="panel-card">
+      <h2>怎么读这张表</h2>
+      <div class="legend">
+        <div><strong>5/2 - 5/6</strong>：尽量按每天价展示，方便比较 1+4 / 2+3 / 1+1+3。</div>
+        <div><strong>5/4-5/7 均价</strong>：前面抓过的后三晚连住均价，适合判断后段值不值。</div>
+        <div><strong>小红书信号强</strong>：抓到专门测评、长评，或者同酒店在多篇帖子里被反复具体讨论。</div>
+        <div><strong>小红书信号中/弱</strong>：更多是对比帖、合集帖、决赛圈帖或泛推荐提及，不等于没热度。</div>
+        <div><strong>用途判断</strong>：我直接给出适合前段过渡、后段升级还是只在包价好时考虑。</div>
+        <div><strong>小红书链接 + 酒店外链</strong>：这版都加上了，便于你继续往下看。</div>
+      </div>
+    </div>
+    <div class="panel-card">
+      <h2>先看结论</h2>
+      <ul>
+        <li><strong>最稳：</strong><code>巴利斯德利 2晚 + 萨拉 3晚</code>，但不是唯一主线</li>
+        <li><strong>不想总看巴黎德利：</strong>也直接看 <code>Balcona / Tru by Hilton / HAIAN</code> 开头的方案</li>
+        <li><strong>后半程体验更好：</strong><code>佩尼苏拉 / M / TMS / Hyatt 包价</code> 这些线都已放进组合池</li>
+        <li><strong>只在包价好时考虑：</strong>凯悦、富丽华、纳曼</li>
+        <li><strong>尽量别在 5/3 冲高端 resort：</strong>这晚最容易只剩高房型，价格失真</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="map-wrap">
+    <div class="map-head">
+      <div>
+        <h2>区域分布示意图</h2>
+        <p>
+          这不是精确经纬度地图，而是为了帮你快速建立“酒店到底扎堆在哪一段”的直觉：
+          <strong>美溪北段</strong> 更适合海景城市酒店，
+          <strong>美溪中南段</strong> 更适合性价比海边住法，
+          <strong>南线 resort</strong> 更适合后半程升级，
+          <strong>韩江/市区</strong> 更适合第一晚或想住城市的人。
+        </p>
+      </div>
+    </div>
+    <div class="zone-map" id="zoneMap"></div>
+  </section>
+
+  <section class="controls">
+    <div class="filter-block">
+      <div class="filter-title">搜索</div>
+      <input class="search" id="searchInput" placeholder="搜索酒店名、区域、关键词，例如：凯悦 / 美溪 / resort" />
+    </div>
+    <div class="filter-block">
+      <div class="filter-title">用途筛选（可多选）</div>
+      <div class="filter-row">
+        <button class="button dim active" data-group="use" data-filter="all">全部用途</button>
+        <button class="button" data-group="use" data-filter="front">前段过渡</button>
+        <button class="button" data-group="use" data-filter="back">后段主住</button>
+        <button class="button" data-group="use" data-filter="package">包价型</button>
+        <button class="button" data-group="use" data-filter="city">市区型</button>
+        <button class="button" data-group="use" data-filter="resort">南线 resort</button>
+      </div>
+    </div>
+    <div class="filter-block">
+      <div class="filter-title">小红书证据强度（可多选）</div>
+      <div class="filter-row">
+        <button class="button dim active" data-group="xhs" data-filter="all">全部强度</button>
+        <button class="button" data-group="xhs" data-filter="strong">强</button>
+        <button class="button" data-group="xhs" data-filter="medium">中</button>
+        <button class="button" data-group="xhs" data-filter="weak">弱</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="mobile-explainer">
+    <p>手机端默认显示卡片视图；平板和桌面仍然保留完整矩阵表，便于横向比较每天价格。</p>
+  </section>
+
+  <section class="mobile-list" id="mobileList"></section>
+
+  <section class="table-wrap">
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>酒店</th>
+            <th>区域</th>
+            <th>5/2</th>
+            <th>5/3</th>
+            <th>5/4</th>
+            <th>5/5</th>
+            <th>5/6</th>
+            <th>5/4-5/7 均价</th>
+            <th>小红书</th>
+            <th>小红书细节</th>
+            <th>小红书链接</th>
+            <th>用途判断</th>
+            <th>外链</th>
+          </tr>
+        </thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="recommend">
+    <div class="panel-card">
+      <h3>组合推荐</h3>
+      <p>这次我把推荐改成“多套组合 + 每晚拆分价 + 总价 + 平均每晚 + 具体理由”。而且不再只围着 <code>Paris Deli</code> 展开，<code>Balcona / Tru by Hilton / HAIAN / TMS / Four Points</code> 这些线也都放进来了。</p>
+      <div class="combo-grid" id="comboGrid"></div>
+    </div>
+  </section>
+
+  <p class="footer-note">
+    说明：这不是“所有房型全抓”的穷举表，而是把这轮对话里已经提到过的酒店尽量统一到一张可用表里。
+    对于凯悦、富丽华这类房型和包价波动非常大的 resort，我把单晚价和包价都写出来了，避免你被单个数字误导。
+    如果某个单元格是空的，表示这轮没有拿到稳定详情页口径，而不是我故意漏掉。酒店外链这次统一切到我本地验证过可返回页面的携程详情页，并补了 Tripadvisor 中文搜索入口。
+  </p>
+</section>
+
+<script>
+  // @ts-nocheck
+  const hotels = [
+    {
+      zh: "岘港海滩巴利斯德利酒店",
+      en: "Paris Deli Danang Beach Hotel",
+      zone: "美溪南段",
+      prices: ["384", "352", "330", "~363", "330", "~341"],
+      xhsLevel: "strong",
+      xhs: "强：早餐超预期、房间安静、设施旧但干净，是前段控预算的典型优等生。",
+      fitTag: "前段过渡优先",
+      fitClass: "front",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=10230518"
+    },
+    {
+      zh: "巴尔科纳酒店",
+      en: "Balcona Hotel Da Nang",
+      zone: "美溪南段 / 安上区边缘",
+      prices: ["390", "410", "391", "~439", "391", "~407"],
+      xhsLevel: "weak",
+      xhs: "弱：更多出现在中档性价比清单里，声量不如萨拉和佩尼苏拉。",
+      fitTag: "前段过渡优先",
+      fitClass: "front",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=18481851"
+    },
+    {
+      zh: "岘港佩尼苏拉酒店",
+      en: "Peninsula Hotel Danang",
+      zone: "美溪北段 / 靠山茶",
+      prices: ["559", "534", "576", "~564", "577", "~572"],
+      xhsLevel: "medium",
+      xhs: "中：常进小红书“决赛圈 / 性价比之选”，价格是这次最平衡的一档。",
+      fitTag: "前后都稳",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=100027488"
+    },
+    {
+      zh: "岘港萨拉海滩酒店",
+      en: "Sala Danang Beach Hotel",
+      zone: "美溪北段 / 靠山茶",
+      prices: ["589", "782", "375", "~459", "375", "~403"],
+      xhsLevel: "strong",
+      xhs: "强：海边、早餐好、隔音好、附近吃的多；但 5/3 这晚价格跳得很高。",
+      fitTag: "后段主住优先",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=34994003"
+    },
+    {
+      zh: "岘港海滩 TMS 酒店",
+      en: "TMS Hotel Da Nang Beach",
+      zone: "美溪中段",
+      prices: ["669", "726", "646", "~691", "646", "~661"],
+      xhsLevel: "medium",
+      xhs: "中：美溪热门海景线标准答案之一，位置成熟，但不算便宜。",
+      fitTag: "后段主住优先",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=24529624"
+    },
+    {
+      zh: "岘港希尔顿花园酒店",
+      en: "Hilton Garden Inn Da Nang",
+      zone: "美溪北段",
+      prices: ["1026", "1837*", "—", "—", "494", "—"],
+      xhsLevel: "strong",
+      xhs: "强：海景阳台和无边泳池很强；但外部音响、枕头和早餐在小红书里有明确吐槽。",
+      fitTag: "后段主住 / 避开 5/3",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=47891337"
+    },
+    {
+      zh: "岘港M酒店",
+      en: "M Hotel Danang",
+      zone: "美溪北段",
+      prices: ["—", "805", "793", "~793", "769", "~785"],
+      xhsLevel: "medium",
+      xhs: "中：无边泳池正对美溪，早餐和出片都常被夸，后半程价格相对稳定。",
+      fitTag: "后段主住优先",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=117011133"
+    },
+    {
+      zh: "Signature by M 海滨酒店",
+      en: "Signature by M Village Beachfront Hotel",
+      zone: "美溪北段",
+      prices: ["—", "766", "—", "—", "677", "—"],
+      xhsLevel: "medium",
+      xhs: "中：新酒店、海景泳池条件不错，但早餐、空调、公区维护和管理口碑分裂。",
+      fitTag: "候补",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=129056542"
+    },
+    {
+      zh: "岘港福朋喜来登酒店",
+      en: "Four Points by Sheraton Danang",
+      zone: "美溪北段",
+      prices: ["1014", "696", "—", "—", "548", "—"],
+      xhsLevel: "medium",
+      xhs: "中：有“海景阳台看日出”的实拍帖，品牌稳，但更像城市海景酒店而不是 resort。",
+      fitTag: "品牌型备选",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=22153383"
+    },
+    {
+      zh: "岘港莫纳科酒店",
+      en: "Monarque Hotel Danang",
+      zone: "美溪中北段",
+      prices: ["无房", "—", "—", "376", "—", "—"],
+      xhsLevel: "strong",
+      xhs: "强：服务很好、早餐和下午茶加分、送夜间河粉券，不在正海边但很有个人气质。",
+      fitTag: "前段凑合但舒服",
+      fitClass: "front",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=9628497"
+    },
+    {
+      zh: "海安海滩水疗酒店",
+      en: "HAIAN Beach Hotel & Spa",
+      zone: "美溪中段",
+      prices: ["771", "726", "~608", "~608", "~608", "~608"],
+      xhsLevel: "medium",
+      xhs: "中：经常进美溪清单，位置好、路数很稳，但并不算特别便宜。",
+      fitTag: "中档稳妥",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=20027768"
+    },
+    {
+      zh: "乐沙海滨酒店",
+      en: "Le Sands Oceanfront Danang Hotel",
+      zone: "美溪北段",
+      prices: ["—", "—", "683", "—", "683", "—"],
+      xhsLevel: "strong",
+      xhs: "强：海景、日出、视野都很强，但低楼层阳台房夜里极吵，附近吃饭一般。",
+      fitTag: "只适合挑高楼层",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=88751996"
+    },
+    {
+      zh: "奇克朗德海滩酒店",
+      en: "Chicland Danang Beach Hotel",
+      zone: "美溪北段",
+      prices: ["945", "646", "—", "—", "—", "—"],
+      xhsLevel: "strong",
+      xhs: "强：设计感很强，但小红书出现了明确差评帖，口碑不是纯正向。",
+      fitTag: "谨慎",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=38449783"
+    },
+    {
+      zh: "岘港希尔顿酒店",
+      en: "Hilton Da Nang",
+      zone: "韩江边市区",
+      prices: ["883", "833", "—", "—", "555", "—"],
+      xhsLevel: "medium",
+      xhs: "中：位置好，但早餐一般，而且不是海边度假逻辑。",
+      fitTag: "市区型",
+      fitClass: "city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=23151826"
+    },
+    {
+      zh: "岘港市中心 Tru by Hilton 酒店",
+      en: "Tru by Hilton Da Nang City Centre",
+      zone: "市中心",
+      prices: ["400", "~357", "277", "277", "277", "~277"],
+      xhsLevel: "weak",
+      xhs: "弱：更偏便宜方便型，适合第一晚凑合，不是海景度假选手。",
+      fitTag: "前段过渡优先",
+      fitClass: "front city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=120757300"
+    },
+    {
+      zh: "岘港丽笙 RED 酒店",
+      en: "Radisson RED Danang",
+      zone: "美溪北段",
+      prices: ["539", "504", "—", "—", "385", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：新派海边酒店，更多是清单里经常出现，单独长测评不多。",
+      fitTag: "备选",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=121740469"
+    },
+    {
+      zh: "岘港丽笙酒店",
+      en: "Radisson Hotel Danang",
+      zone: "美溪北段",
+      prices: ["987", "724", "—", "—", "525", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：常见海边清单，但这次价格没有便宜到特别值得优先选。",
+      fitTag: "备选",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=70920349"
+    },
+    {
+      zh: "岘港诺富特韩江酒店",
+      en: "Novotel Danang Premier Han River",
+      zone: "韩江边市区",
+      prices: ["760", "761", "—", "—", "545", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：市区江景线常客，但不是海边度假路线。",
+      fitTag: "市区型",
+      fitClass: "city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=1963544"
+    },
+    {
+      zh: "岘港美利亚珍珠河畔酒店",
+      en: "Melia Vinpearl Danang Riverfront",
+      zone: "韩江边市区",
+      prices: ["672", "585", "—", "—", "585", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：更多出现在市区住宿清单里，不是你这次主线。",
+      fitTag: "市区型",
+      fitClass: "city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=22154936"
+    },
+    {
+      zh: "岘港万怡韩江酒店",
+      en: "Courtyard by Marriott Danang Han River",
+      zone: "韩江边市区",
+      prices: ["813", "732", "—", "—", "—", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：市区新酒店路线，有品牌感，但不是海边度假路线。",
+      fitTag: "市区型",
+      fitClass: "city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=129078951"
+    },
+    {
+      zh: "岘港凯悦酒店",
+      en: "Hyatt Regency Danang Resort and Spa",
+      zone: "南线 Non Nuoc",
+      prices: ["—", "—", "1559*", "—", "1559*", "~692"],
+      xhsLevel: "medium",
+      xhs: "中：tips 帖很多，也有低性价比争议；如果后三晚包价还在，其实会很有竞争力。",
+      fitTag: "只看包价",
+      fitClass: "package resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=713826"
+    },
+    {
+      zh: "岘港富丽华大酒店",
+      en: "Furama Resort Danang",
+      zone: "南线 Bac My An",
+      prices: ["2432", "1935", "1563*", "—", "1563*", "~476"],
+      xhsLevel: "medium",
+      xhs: "中：老牌 resort，常进红黑榜和对比帖；单晚很容易失真，包价反而漂亮。",
+      fitTag: "只看包价",
+      fitClass: "package resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=999113"
+    },
+    {
+      zh: "纳曼度假村",
+      en: "Naman Retreat",
+      zone: "南线 / 去会安更顺",
+      prices: ["—", "—", "~874", "~874", "~874", "~874"],
+      xhsLevel: "medium",
+      xhs: "中：常和凯悦、万豪、Fusion 一起比较，度假感强，后段轻奢升级很顺。",
+      fitTag: "后段升级",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=2321451"
+    },
+    {
+      zh: "岘港喜来登豪华海滩度假酒店",
+      en: "Sheraton Grand Danang Beach Resort & SPA",
+      zone: "南线",
+      prices: ["—", "—", "~966", "~966", "~966", "~966"],
+      xhsLevel: "medium",
+      xhs: "中：常和万豪一起被比较，纯度假感强，但已经贴着或超过你的预算上沿。",
+      fitTag: "超预算边缘",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=15691333"
+    },
+    {
+      zh: "岘港万豪度假酒店及水疗中心",
+      en: "Danang Marriott Resort & Spa",
+      zone: "南线",
+      prices: ["—", "—", "~1081", "~1081", "~1081", "~1081"],
+      xhsLevel: "medium",
+      xhs: "中：度假感很足，但对你这次预算来说明显偏高。",
+      fitTag: "超预算",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=993558"
+    },
+    {
+      zh: "岘港铂尔曼海滩度假酒店",
+      en: "Pullman Danang Beach Resort",
+      zone: "南线",
+      prices: ["1830", "—", "~1143", "~1143", "~1143", "~1143"],
+      xhsLevel: "weak",
+      xhs: "弱-中：高端 resort 清单常客，但这次对你的预算不太友好。",
+      fitTag: "超预算",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=1877388"
+    },
+    {
+      zh: "岘港美利亚海滩度假酒店",
+      en: "Melia Danang Beach Resort",
+      zone: "南线",
+      prices: ["—", "—", "~993", "~993", "~993", "~993"],
+      xhsLevel: "weak",
+      xhs: "弱-中：resort 清单常客，但预算上也已经超线。",
+      fitTag: "超预算",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=2614627"
+    },
+    {
+      zh: "TIA 康养度假村",
+      en: "TIA Wellness Resort",
+      zone: "南线",
+      prices: ["无房", "仅大别墅", "~1151", "~1151", "~1151", "~1151"],
+      xhsLevel: "medium",
+      xhs: "中：小红书常把它和洲际、Fusion 一起聊，康养和 spa 路线很强，但这次明显超预算。",
+      fitTag: "超预算",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=713692"
+    },
+    {
+      zh: "岘港皇冠假日酒店",
+      en: "Crowne Plaza Danang",
+      zone: "南线",
+      prices: ["870", "717", "809", "~760", "717", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：声量不如凯悦、纳曼、万豪，价格也没有形成明显优势。",
+      fitTag: "候补",
+      fitClass: "resort",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=2196146"
+    },
+    {
+      zh: "岘港 voco Ma Belle 酒店",
+      en: "voco Ma Belle Danang by IHG",
+      zone: "美溪北段",
+      prices: ["—", "—", "—", "—", "561", "—"],
+      xhsLevel: "strong",
+      xhs: "强：有明确避雷帖，不建议作为优先选项。",
+      fitTag: "不建议优先",
+      fitClass: "back",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=104994673"
+    },
+    {
+      zh: "Signature by M Heritage 酒店",
+      en: "Signature by M Village Danang Heritage, The First Heritage Luxury Hotel",
+      zone: "韩江边市区",
+      prices: ["—", "—", "—", "—", "369", "—"],
+      xhsLevel: "weak",
+      xhs: "弱：市区设计向，讨论还少，适合想住韩江边而不是海边的人。",
+      fitTag: "市区候补",
+      fitClass: "city",
+      ctrip: "https://hotels.ctrip.com/hotels/detail/?hotelId=124380406"
+    }
+  ];
+
+  const xhsReferenceMap = {
+    "Paris Deli Danang Beach Hotel": [
+      {
+        label: "完整测评",
+        url: "https://www.xiaohongshu.com/search_result/67ce589700000000290172ce?xsec_token=ABRv618Z8t8Xt3A7_GZIHWQqNwnm8o9m5h7lmu6HH9T4w=&xsec_source="
+      }
+    ],
+    "Sala Danang Beach Hotel": [
+      {
+        label: "四家测评",
+        url: "https://www.xiaohongshu.com/search_result/67f0eb30000000000e0052fa?xsec_token=ABYAijdiaXsWGa1zja_n08wSwWWnbuC1YjHGdV2gtDz7c=&xsec_source="
+      },
+      {
+        label: "美溪合集",
+        url: "https://www.xiaohongshu.com/search_result/68ee1584000000000302e59d?xsec_token=ABJPYkq1u5pUqigtPJHnfjAWcQtoRKZBPzd3yYWP2Zdyk=&xsec_source="
+      }
+    ],
+    "Peninsula Hotel Danang": [
+      {
+        label: "决赛圈帖",
+        url: "https://www.xiaohongshu.com/search_result/69b960d600000000220259f8?xsec_token=ABnxwwICtTWJpv7ZETivyfS9SEHi3jO37oo5RjpZB3fs4=&xsec_source="
+      }
+    ],
+    "TMS Hotel Da Nang Beach": [
+      {
+        label: "美溪推荐",
+        url: "https://www.xiaohongshu.com/search_result/68cc11c0000000001201f8ad?xsec_token=ABEWg_bikyX8KbpPf3EsLv9KQGXxC_Tmcfl4KHloi_KNM=&xsec_source="
+      }
+    ],
+    "Hilton Garden Inn Da Nang": [
+      {
+        label: "实住测评",
+        url: "https://www.xiaohongshu.com/search_result/66856a3e000000000a007b7b?xsec_token=ABJ9buBySZqLCHYnJxQUdBDH1qI-7NBtm50R-uyHTOMzg=&xsec_source="
+      },
+      {
+        label: "和万豪对比",
+        url: "https://www.xiaohongshu.com/search_result/6950b8fb000000001e03bc07?xsec_token=ABH0t6bllQKBQYaVx-vZbrUElb_4QI4WypIlAFqtW0FKg=&xsec_source="
+      }
+    ],
+    "M Hotel Danang": [
+      {
+        label: "实住帖",
+        url: "https://www.xiaohongshu.com/search_result/67fbc190000000000d016b35?xsec_token=ABxeCp3C-VnCpYOjFRjFC2Dg6x_UzeyE14xdJVTNlRnXw=&xsec_source="
+      }
+    ],
+    "Signature by M Village Beachfront Hotel": [
+      {
+        label: "小红书搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Signature%20by%20M%20Village%20Beachfront%20Hotel"
+      }
+    ],
+    "Four Points by Sheraton Danang": [
+      {
+        label: "日出实拍",
+        url: "https://www.xiaohongshu.com/search_result/69999781000000001b01d9d5?xsec_token=ABIyQhHmWqvmBtB-rcj_FTBd96KTnixKn-P5pv3cVwE6Y=&xsec_source="
+      }
+    ],
+    "Monarque Hotel Danang": [
+      {
+        label: "四家测评",
+        url: "https://www.xiaohongshu.com/search_result/67f0eb30000000000e0052fa?xsec_token=ABYAijdiaXsWGa1zja_n08wSwWWnbuC1YjHGdV2gtDz7c=&xsec_source="
+      }
+    ],
+    "HAIAN Beach Hotel & Spa": [
+      {
+        label: "美溪合集",
+        url: "https://www.xiaohongshu.com/search_result/68ee1584000000000302e59d?xsec_token=ABJPYkq1u5pUqigtPJHnfjAWcQtoRKZBPzd3yYWP2Zdyk=&xsec_source="
+      }
+    ],
+    "Le Sands Oceanfront Danang Hotel": [
+      {
+        label: "完整测评",
+        url: "https://www.xiaohongshu.com/search_result/67ce589700000000290172ce?xsec_token=ABRv618Z8t8Xt3A7_GZIHWQqNwnm8o9m5h7lmu6HH9T4w=&xsec_source="
+      }
+    ],
+    "Chicland Danang Beach Hotel": [
+      {
+        label: "差评帖",
+        url: "https://www.xiaohongshu.com/search_result/68e37419000000000303af81?xsec_token=AB-jLkqOq9zfSw_ldwKFPmZvxaJd2KgsxHBLhKCylMZAA=&xsec_source="
+      }
+    ],
+    "Hilton Da Nang": [
+      {
+        label: "希尔顿搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Hilton%20Da%20Nang"
+      }
+    ],
+    "Tru by Hilton Da Nang City Centre": [
+      {
+        label: "Tru 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Tru%20by%20Hilton%20Da%20Nang%20City%20Centre"
+      }
+    ],
+    "Radisson RED Danang": [
+      {
+        label: "合集搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Radisson%20RED%20Danang"
+      }
+    ],
+    "Radisson Hotel Danang": [
+      {
+        label: "合集搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Radisson%20Hotel%20Danang"
+      }
+    ],
+    "Novotel Danang Premier Han River": [
+      {
+        label: "市区搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Novotel%20Danang%20Premier%20Han%20River"
+      }
+    ],
+    "Melia Vinpearl Danang Riverfront": [
+      {
+        label: "市区搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Melia%20Vinpearl%20Danang%20Riverfront"
+      }
+    ],
+    "Courtyard by Marriott Danang Han River": [
+      {
+        label: "市区搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Courtyard%20by%20Marriott%20Danang%20Han%20River"
+      }
+    ],
+    "Hyatt Regency Danang Resort and Spa": [
+      {
+        label: "凯悦 tips",
+        url: "https://www.xiaohongshu.com/search_result/69e08348000000001a02a653?xsec_token=ABqai9D5JCG9RkiKRtamK-Bf_K1JKx1i0RbLGIQZuJdbw=&xsec_source="
+      },
+      {
+        label: "和万豪对比",
+        url: "https://www.xiaohongshu.com/search_result/68eba8c60000000007009de4?xsec_token=ABF-L6S0n2MDd9O7qtje2Cl56xiJy6IDtA41zXbJvzoew=&xsec_source="
+      }
+    ],
+    "Furama Resort Danang": [
+      {
+        label: "红黑榜",
+        url: "https://www.xiaohongshu.com/search_result/6818dc5d0000000021002b2c?xsec_token=ABT8XWy6rY1866cewCCS_TdNf-mHnFDmVgr6ni5tjaqrw=&xsec_source="
+      }
+    ],
+    "Naman Retreat": [
+      {
+        label: "度假对比",
+        url: "https://www.xiaohongshu.com/search_result/68c937050000000012030344?xsec_token=ABjWhD_8Ru0HwoMFiER6Rv18cwzTy3MUxfEWjLPlDmduU=&xsec_source="
+      }
+    ],
+    "Sheraton Grand Danang Beach Resort & SPA": [
+      {
+        label: "万豪 vs 喜来登",
+        url: "https://www.xiaohongshu.com/search_result/67299d96000000003c01e1e7?xsec_token=AB3lfolFN-wZg5Gp6z559NhW5BrZzGmbHhmGi60rra018=&xsec_source="
+      }
+    ],
+    "Danang Marriott Resort & Spa": [
+      {
+        label: "品测",
+        url: "https://www.xiaohongshu.com/search_result/695f7587000000001a032d6a?xsec_token=ABi2bB4ABqI5bvRscv6idu1IodXdbfu8MsZ32VEjB0EV4=&xsec_source="
+      },
+      {
+        label: "和凯悦对比",
+        url: "https://www.xiaohongshu.com/search_result/68eba8c60000000007009de4?xsec_token=ABF-L6S0n2MDd9O7qtje2Cl56xiJy6IDtA41zXbJvzoew=&xsec_source="
+      }
+    ],
+    "Pullman Danang Beach Resort": [
+      {
+        label: "resort 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Pullman%20Danang%20Beach%20Resort"
+      }
+    ],
+    "Melia Danang Beach Resort": [
+      {
+        label: "resort 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Melia%20Danang%20Beach%20Resort"
+      }
+    ],
+    "TIA Wellness Resort": [
+      {
+        label: "wellness 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=TIA%20Wellness%20Resort"
+      }
+    ],
+    "Crowne Plaza Danang": [
+      {
+        label: "resort 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Crowne%20Plaza%20Danang"
+      }
+    ],
+    "voco Ma Belle Danang by IHG": [
+      {
+        label: "避雷帖",
+        url: "https://www.xiaohongshu.com/search_result/676a1dd5000000000902f115?xsec_token=ABqiwIKP354Rg5zsa_ET3e1jq2-Td4YB5XMJNrutke6m0=&xsec_source="
+      }
+    ],
+    "Signature by M Village Danang Heritage, The First Heritage Luxury Hotel": [
+      {
+        label: "heritage 搜索",
+        url: "https://www.xiaohongshu.com/search_result?keyword=Signature%20by%20M%20Village%20Danang%20Heritage"
+      }
+    ]
+  };
+
+  const combos = [
+    {
+      title: "方案 1：最稳的 2+3",
+      type: "2+3",
+      total: 1945,
+      avg: 389,
+      route: [
+        "5/2-5/4：岘港海滩巴利斯德利酒店 / Paris Deli",
+        "5/4-5/7：岘港萨拉海滩酒店 / Sala"
+      ],
+      nightly: ["5/2 ¥384", "5/3 ¥352", "5/4 ¥375", "5/5 ¥459", "5/6 ¥375"],
+      reason: "还是很稳，但现在它只是整个组合池里的一个基准方案，不是唯一推荐。"
+    },
+    {
+      title: "方案 2：Balcona 平替 2+3",
+      type: "2+3",
+      total: 2009,
+      avg: 402,
+      route: [
+        "5/2-5/4：巴尔科纳酒店 / Balcona",
+        "5/4-5/7：岘港萨拉海滩酒店 / Sala"
+      ],
+      nightly: ["5/2 ¥390", "5/3 ¥410", "5/4 ¥375", "5/5 ¥459", "5/6 ¥375"],
+      reason: "如果你不想第一家默认就是 Paris Deli，这套是最自然的替代主线。"
+    },
+    {
+      title: "方案 3：Tru 低预算 2+3",
+      type: "2+3",
+      total: 1966,
+      avg: 393,
+      route: [
+        "5/2-5/4：岘港市中心 Tru by Hilton 酒店 / Tru by Hilton",
+        "5/4-5/7：岘港萨拉海滩酒店 / Sala"
+      ],
+      nightly: ["5/2 ¥400", "5/3 ¥357", "5/4 ¥375", "5/5 ¥459", "5/6 ¥375"],
+      reason: "第一段纯把钱省下来，后面再回到你真正想住的海边线，适合到得晚、第一晚只想睡觉。"
+    },
+    {
+      title: "方案 4：Paris + Peninsula 的平衡 2+3",
+      type: "2+3",
+      total: 2453,
+      avg: 491,
+      route: [
+        "5/2-5/4：岘港海滩巴利斯德利酒店 / Paris Deli",
+        "5/4-5/7：岘港佩尼苏拉酒店 / Peninsula"
+      ],
+      nightly: ["5/2 ¥384", "5/3 ¥352", "5/4 ¥576", "5/5 ¥564", "5/6 ¥577"],
+      reason: "后半程更稳，更像不想后悔的保守打法。"
+    },
+    {
+      title: "方案 5：Balcona + Peninsula 的非 Paris 主线",
+      type: "2+3",
+      total: 2517,
+      avg: 503,
+      route: [
+        "5/2-5/4：巴尔科纳酒店 / Balcona",
+        "5/4-5/7：岘港佩尼苏拉酒店 / Peninsula"
+      ],
+      nightly: ["5/2 ¥390", "5/3 ¥410", "5/4 ¥576", "5/5 ¥564", "5/6 ¥577"],
+      reason: "如果你就是不想围着 Paris Deli 选，这套很像新的默认方案。"
+    },
+    {
+      title: "方案 6：HAIAN + Peninsula 的稳妥升级版",
+      type: "2+3",
+      total: 3214,
+      avg: 643,
+      route: [
+        "5/2-5/4：海安海滩水疗酒店 / HAIAN",
+        "5/4-5/7：岘港佩尼苏拉酒店 / Peninsula"
+      ],
+      nightly: ["5/2 ¥771", "5/3 ¥726", "5/4 ¥576", "5/5 ¥564", "5/6 ¥577"],
+      reason: "如果你连前两晚也不想太委屈，又还不想直接上 resort，这套更像中高配城市海景线。"
+    },
+    {
+      title: "方案 7：最省脑子的 1+4",
+      type: "1+4",
+      total: 2635,
+      avg: 527,
+      route: [
+        "5/2：岘港海滩巴利斯德利酒店 / Paris Deli",
+        "5/3-5/7：岘港佩尼苏拉酒店 / Peninsula"
+      ],
+      nightly: ["5/2 ¥384", "5/3 ¥534", "5/4 ¥576", "5/5 ¥564", "5/6 ¥577"],
+      reason: "只搬一次。第一晚只是过渡，后 4 晚直接稳定住下来。"
+    },
+    {
+      title: "方案 8：Balcona 开头的 1+4",
+      type: "1+4",
+      total: 2381,
+      avg: 476,
+      route: [
+        "5/2：巴尔科纳酒店 / Balcona",
+        "5/3-5/7：岘港萨拉海滩酒店 / Sala"
+      ],
+      nightly: ["5/2 ¥390", "5/3 ¥782", "5/4 ¥375", "5/5 ¥459", "5/6 ¥375"],
+      reason: "如果你更想把后四晚住在一起，这套比 Paris 线更不重复，也很直观。"
+    },
+    {
+      title: "方案 9：Tru 开头的 1+4",
+      type: "1+4",
+      total: 2651,
+      avg: 530,
+      route: [
+        "5/2：岘港市中心 Tru by Hilton 酒店 / Tru by Hilton",
+        "5/3-5/7：岘港佩尼苏拉酒店 / Peninsula"
+      ],
+      nightly: ["5/2 ¥400", "5/3 ¥534", "5/4 ¥576", "5/5 ¥564", "5/6 ¥577"],
+      reason: "第一晚把预算压到最低，后面 4 晚住得更整齐，适合把‘晚到那一夜’当纯过渡。"
+    },
+    {
+      title: "方案 10：1+1+3 后半程升级",
+      type: "1+1+3",
+      total: 3273,
+      avg: 655,
+      route: [
+        "5/2：岘港海滩巴利斯德利酒店 / Paris Deli",
+        "5/3：岘港佩尼苏拉酒店 / Peninsula",
+        "5/4-5/7：岘港M酒店 / M Hotel"
+      ],
+      nightly: ["5/2 ¥384", "5/3 ¥534", "5/4 ¥793", "5/5 ¥793", "5/6 ¥769"],
+      reason: "把最贵的 5/3 单独拆出来，后面再切去更像样的海景线酒店。"
+    },
+    {
+      title: "方案 11：Balcona + Peninsula + Hyatt 包价版",
+      type: "1+1+3",
+      total: 3000,
+      avg: 600,
+      route: [
+        "5/2：巴尔科纳酒店 / Balcona",
+        "5/3：岘港佩尼苏拉酒店 / Peninsula",
+        "5/4-5/7：岘港凯悦酒店 / Hyatt Regency"
+      ],
+      nightly: ["5/2 ¥390", "5/3 ¥534", "5/4-5/6 ¥692/晚"],
+      reason: "这套终于不再从 Paris Deli 出发。只要 Hyatt 的 3 晚包价还在，它就是很有存在感的升级方案。"
+    },
+    {
+      title: "方案 12：Paris + Peninsula + Furama 包价版",
+      type: "1+1+3",
+      total: 2346,
+      avg: 469,
+      route: [
+        "5/2：岘港海滩巴利斯德利酒店 / Paris Deli",
+        "5/3：岘港佩尼苏拉酒店 / Peninsula",
+        "5/4-5/7：岘港富丽华大酒店 / Furama"
+      ],
+      nightly: ["5/2 ¥384", "5/3 ¥534", "5/4-5/6 ¥476/晚"],
+      reason: "理论性价比非常强，但前提也是富丽华那个包价还挂着，否则单晚价会失真。"
+    },
+    {
+      title: "方案 13：Balcona + Peninsula + Naman 去会安版",
+      type: "1+1+3",
+      total: 3546,
+      avg: 709,
+      route: [
+        "5/2：巴尔科纳酒店 / Balcona",
+        "5/3：岘港佩尼苏拉酒店 / Peninsula",
+        "5/4-5/7：纳曼度假村 / Naman Retreat"
+      ],
+      nightly: ["5/2 ¥390", "5/3 ¥534", "5/4-5/6 ¥874/晚"],
+      reason: "如果你确定要把后半程南移、顺路去会安，这套比 Paris 出发那版更像真正的替代线。"
+    },
+    {
+      title: "方案 14：Four Points 品牌派 1+4",
+      type: "1+4",
+      total: 3005,
+      avg: 601,
+      route: [
+        "5/2：岘港福朋喜来登酒店 / Four Points",
+        "5/3-5/7：岘港萨拉海滩酒店 / Sala"
+      ],
+      nightly: ["5/2 ¥1014", "5/3 ¥782", "5/4 ¥375", "5/5 ¥459", "5/6 ¥375"],
+      reason: "如果你第一晚也想要品牌感，这套能成立，但预算明显就上来了。"
+    }
+  ];
+
+  const body = document.getElementById("matrixBody");
+  const mobileList = document.getElementById("mobileList");
+  const zoneMap = document.getElementById("zoneMap");
+  const comboGrid = document.getElementById("comboGrid");
+  const searchInput = document.getElementById("searchInput");
+  const buttons = [...document.querySelectorAll(".button")];
+  let activeUseFilters = new Set();
+  let activeXhsFilters = new Set();
+
+  function signalLabel(level) {
+    if (level === "strong") return "强";
+    if (level === "medium") return "中";
+    return "弱";
+  }
+
+  function getLinks(hotel) {
+    return xhsReferenceMap[hotel.en] || [
+      {
+        label: "小红书搜索",
+        url: `https://www.xiaohongshu.com/search_result?keyword=${encodeURIComponent(`${hotel.zh} ${hotel.en}`)}`
+      }
+    ];
+  }
+
+  function bookingUrl(hotel) {
+    return hotel.ctrip || `https://hotels.ctrip.com/hotels/list?keyword=${encodeURIComponent(hotel.en)}`;
+  }
+
+  function tripadvisorUrl(hotel) {
+    return `https://www.tripadvisor.cn/Search?q=${encodeURIComponent(`${hotel.en} ${hotel.zh}`)}`;
+  }
+
+  function zoneGroup(hotel) {
+    if (hotel.fitClass.includes("resort")) return "south";
+    if (hotel.fitClass.includes("city")) return "city";
+    if (hotel.zone.includes("北段") || hotel.zone.includes("山茶")) return "north";
+    return "middle";
+  }
+
+  function summaryBullets(text) {
+    return text
+      .replace(/^强：|^中：|^弱：|^弱-中：/g, "")
+      .split("；")
+      .filter(Boolean);
+  }
+
+  function renderMap() {
+    const groups = {
+      city: {
+        title: "韩江 / 市区",
+        cls: "city",
+        desc: "适合第一晚、想吃喝方便、或者不追海边度假感的人。"
+      },
+      north: {
+        title: "美溪北段",
+        cls: "north",
+        desc: "海景城市酒店最密集，佩尼苏拉、希尔顿花园、M、福朋都在这条线。"
+      },
+      middle: {
+        title: "美溪中南段",
+        cls: "middle",
+        desc: "更偏生活感和性价比，巴黎德利、TMS、HAIAN、Monarque 适合控预算。"
+      },
+      south: {
+        title: "南线 Resort",
+        cls: "south",
+        desc: "更接近度假村逻辑，也更顺路去会安，但预算压力会明显变大。"
+      }
+    };
+
+    zoneMap.innerHTML = "";
+    Object.entries(groups).forEach(([key, meta]) => {
+      const card = document.createElement("div");
+      card.className = `zone-card ${meta.cls}`;
+      const items = hotels
+        .filter((hotel) => zoneGroup(hotel) === key)
+        .map((hotel) => `<span class="chip">${hotel.zh}<strong>${hotel.fitTag}</strong></span>`)
+        .join("");
+      card.innerHTML = `
+        <h3>${meta.title}</h3>
+        <p>${meta.desc}</p>
+        <div class="chip-list">${items}</div>
+      `;
+      zoneMap.appendChild(card);
+    });
+  }
+
+  function renderCombos() {
+    comboGrid.innerHTML = "";
+    combos.forEach((combo) => {
+      const card = document.createElement("div");
+      card.className = "combo-card";
+      card.innerHTML = `
+        <h4>${combo.title}</h4>
+        <div class="combo-total">总价约 ¥${combo.total}</div>
+        <div class="combo-sub">${combo.type} | 平均约 ¥${combo.avg}/晚</div>
+        <div class="combo-sub">每晚价格：${combo.nightly.join(" · ")}</div>
+        <ul>${combo.route.map((item) => `<li>${item}</li>`).join("")}</ul>
+        <div class="combo-note">${combo.reason}</div>
+      `;
+      comboGrid.appendChild(card);
+    });
+  }
+
+  function filteredHotels() {
+    const keyword = searchInput.value.trim().toLowerCase();
+
+    return hotels.filter((hotel) => {
+      const fitClasses = hotel.fitClass.split(" ");
+      const usePass =
+        activeUseFilters.size === 0 ||
+        [...activeUseFilters].some((filter) => fitClasses.includes(filter));
+      const xhsPass = activeXhsFilters.size === 0 || activeXhsFilters.has(hotel.xhsLevel);
+      const refs = getLinks(hotel)
+        .map((item) => item.label)
+        .join(" ");
+      const text = `${hotel.zh} ${hotel.en} ${hotel.zone} ${hotel.xhs} ${hotel.fitTag} ${refs}`.toLowerCase();
+      const keywordPass = !keyword || text.includes(keyword);
+      return usePass && xhsPass && keywordPass;
+    });
+  }
+
+  function renderTable(items) {
+    body.innerHTML = "";
+
+    items.forEach((hotel) => {
+      const refs = getLinks(hotel);
+      const refHtml = refs
+        .map(
+          (item, index) =>
+            `<a href="${item.url}" target="_blank" rel="noopener" class="${index === 0 ? "primary" : ""}">${item.label}</a>`
+        )
+        .join("");
+      const bullets = summaryBullets(hotel.xhs).map((item) => `<li>${item}</li>`).join("");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="hotel">
+          <div class="cn">${hotel.zh}</div>
+          <div class="en">${hotel.en}</div>
+        </td>
+        <td class="zone">${hotel.zone}</td>
+        <td class="price">${hotel.prices[0]}</td>
+        <td class="price">${hotel.prices[1]}</td>
+        <td class="price">${hotel.prices[2]}</td>
+        <td class="price">${hotel.prices[3]}</td>
+        <td class="price">${hotel.prices[4]}</td>
+        <td class="price">${hotel.prices[5]}</td>
+        <td><span class="signal ${hotel.xhsLevel}">${signalLabel(hotel.xhsLevel)}</span></td>
+        <td class="summary"><ul>${bullets}</ul></td>
+        <td class="links">${refHtml}</td>
+        <td class="fit">
+          <span class="tag">${hotel.fitTag}</span>
+        </td>
+        <td class="actions links">
+          <a href="${bookingUrl(hotel)}" target="_blank" rel="noopener" class="primary">携程详情</a>
+          <a href="${tripadvisorUrl(hotel)}" target="_blank" rel="noopener">Tripadvisor 中文</a>
+        </td>
+      `;
+      body.appendChild(row);
+    });
+  }
+
+  function renderMobile(items) {
+    mobileList.innerHTML = "";
+
+    items.forEach((hotel) => {
+      const refs = getLinks(hotel)
+        .map(
+          (item, index) =>
+            `<a href="${item.url}" target="_blank" rel="noopener" class="${index === 0 ? "primary" : ""}">${item.label}</a>`
+        )
+        .join("");
+      const bullets = summaryBullets(hotel.xhs).map((item) => `<li>${item}</li>`).join("");
+      const priceLabels = ["5/2", "5/3", "5/4", "5/5", "5/6", "均价"];
+      const priceGrid = hotel.prices
+        .map(
+          (price, index) => `
+            <div class="mobile-price-item">
+              <span>${priceLabels[index]}</span>
+              <strong>${price}</strong>
+            </div>
+          `
+        )
+        .join("");
+
+      const card = document.createElement("article");
+      card.className = "mobile-card";
+      card.innerHTML = `
+        <div class="mobile-card-head">
+          <div>
+            <h3>${hotel.zh}</h3>
+            <p>${hotel.en}</p>
+          </div>
+          <span class="signal ${hotel.xhsLevel}">${signalLabel(hotel.xhsLevel)}</span>
+        </div>
+        <div class="mobile-tags">
+          <span class="tag">${hotel.fitTag}</span>
+          <span class="tag muted-tag">${hotel.zone}</span>
+        </div>
+        <div class="mobile-price-grid">${priceGrid}</div>
+        <div class="mobile-summary">
+          <h4>小红书细节</h4>
+          <ul>${bullets}</ul>
+        </div>
+        <div class="mobile-links links">${refs}</div>
+        <div class="mobile-links links">
+          <a href="${bookingUrl(hotel)}" target="_blank" rel="noopener" class="primary">携程详情</a>
+          <a href="${tripadvisorUrl(hotel)}" target="_blank" rel="noopener">Tripadvisor 中文</a>
+        </div>
+      `;
+      mobileList.appendChild(card);
+    });
+  }
+
+  function render() {
+    const items = filteredHotels();
+    renderTable(items);
+    renderMobile(items);
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const group = button.dataset.group;
+      const filter = button.dataset.filter;
+      const targetSet = group === "use" ? activeUseFilters : activeXhsFilters;
+      const groupButtons = buttons.filter((candidate) => candidate.dataset.group === group);
+      const allButton = groupButtons.find((candidate) => candidate.dataset.filter === "all");
+
+      if (filter === "all") {
+        targetSet.clear();
+      } else if (targetSet.has(filter)) {
+        targetSet.delete(filter);
+      } else {
+        targetSet.add(filter);
+      }
+
+      groupButtons.forEach((candidate) => {
+        if (candidate.dataset.filter === "all") {
+          candidate.classList.toggle("active", targetSet.size === 0);
+        } else {
+          candidate.classList.toggle("active", targetSet.has(candidate.dataset.filter));
+        }
+      });
+
+      if (allButton) {
+        allButton.classList.toggle("active", targetSet.size === 0);
+      }
+
+      render();
+    });
+  });
+
+  searchInput.addEventListener("input", render);
+  renderMap();
+  renderCombos();
+  render();
+</script>
+
+<style is:global>
+  .hotel-matrix-page {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .hotel-matrix-page {
+    --matrix-bg: #f6f3ee;
+    --matrix-card: rgba(255, 255, 255, 0.86);
+    --matrix-line: rgba(34, 44, 58, 0.12);
+    --matrix-text: #1d2733;
+    --matrix-muted: #6a7480;
+    --matrix-sea: #0f7688;
+    --matrix-sand: #d58b38;
+    --matrix-accent: #c84b31;
+    --matrix-ok: #1f8f63;
+    --matrix-warn: #b77a10;
+    --matrix-bad: #b33a3a;
+    --matrix-shadow: 0 18px 48px rgba(27, 39, 51, 0.08);
+  }
+
+  .hotel-matrix-page .hero,
+  .hotel-matrix-page .panel-card,
+  .hotel-matrix-page .map-wrap,
+  .hotel-matrix-page .controls,
+  .hotel-matrix-page .table-wrap,
+  .hotel-matrix-page .mobile-card,
+  .hotel-matrix-page .mobile-explainer {
+    background: var(--matrix-card);
+    border-radius: 1.5rem;
+    box-shadow: var(--matrix-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(12px);
+  }
+
+  .hotel-matrix-page .hero {
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(249, 243, 233, 0.9));
+  }
+
+  .hotel-matrix-page .hero::after {
+    content: "";
+    position: absolute;
+    right: -5rem;
+    top: -5rem;
+    width: 15rem;
+    height: 15rem;
+    background: radial-gradient(circle, rgba(15, 118, 136, 0.16), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hotel-matrix-page h1,
+  .hotel-matrix-page h2,
+  .hotel-matrix-page h3,
+  .hotel-matrix-page h4,
+  .hotel-matrix-page p,
+  .hotel-matrix-page li,
+  .hotel-matrix-page strong,
+  .hotel-matrix-page span,
+  .hotel-matrix-page input,
+  .hotel-matrix-page button {
+    color: var(--matrix-text);
+  }
+
+  .hotel-matrix-page h1 {
+    margin: 0 0 0.7rem;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+  }
+
+  .hotel-matrix-page h2,
+  .hotel-matrix-page h3 {
+    margin: 0 0 0.8rem;
+  }
+
+  .hotel-matrix-page .sub,
+  .hotel-matrix-page .map-head p,
+  .hotel-matrix-page .footer-note,
+  .hotel-matrix-page .mobile-explainer p,
+  .hotel-matrix-page .zone-card p,
+  .hotel-matrix-page .combo-sub,
+  .hotel-matrix-page .combo-note,
+  .hotel-matrix-page .hotel .en,
+  .hotel-matrix-page .zone,
+  .hotel-matrix-page .price small,
+  .hotel-matrix-page .mobile-card-head p {
+    color: var(--matrix-muted);
+  }
+
+  .hotel-matrix-page .sub,
+  .hotel-matrix-page .panel-card p,
+  .hotel-matrix-page .panel-card li,
+  .hotel-matrix-page .footer-note {
+    line-height: 1.7;
+  }
+
+  .hotel-matrix-page .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1rem;
+  }
+
+  .hotel-matrix-page .pill,
+  .hotel-matrix-page .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(15, 118, 136, 0.14);
+  }
+
+  .hotel-matrix-page .pill {
+    background: rgba(15, 118, 136, 0.08);
+    color: var(--matrix-sea);
+  }
+
+  .hotel-matrix-page .grid,
+  .hotel-matrix-page .combo-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .hotel-matrix-page .grid {
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .hotel-matrix-page .panel-card,
+  .hotel-matrix-page .map-wrap,
+  .hotel-matrix-page .controls,
+  .hotel-matrix-page .mobile-explainer {
+    padding: 1.35rem;
+  }
+
+  .hotel-matrix-page .panel-card ul,
+  .hotel-matrix-page .summary ul,
+  .hotel-matrix-page .combo-card ul,
+  .hotel-matrix-page .mobile-summary ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+
+  .hotel-matrix-page .legend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+    font-size: 0.92rem;
+  }
+
+  .hotel-matrix-page .controls {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .hotel-matrix-page .filter-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--matrix-muted);
+    margin-bottom: 0.65rem;
+    letter-spacing: 0.02em;
+  }
+
+  .hotel-matrix-page .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .hotel-matrix-page .search {
+    width: 100%;
+    min-width: 0;
+    padding: 0.85rem 0.95rem;
+    border-radius: 0.95rem;
+    border: 1px solid var(--matrix-line);
+    background: rgba(255, 255, 255, 0.88);
+    font-size: 0.95rem;
+  }
+
+  .hotel-matrix-page .button {
+    border: 1px solid rgba(15, 118, 136, 0.16);
+    background: rgba(255, 255, 255, 0.88);
+    color: var(--matrix-sea);
+    padding: 0.65rem 0.95rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: 0.18s ease;
+  }
+
+  .hotel-matrix-page .button:hover,
+  .hotel-matrix-page .button.active {
+    background: rgba(15, 118, 136, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .hotel-matrix-page .button.dim {
+    color: var(--matrix-muted);
+    border-color: rgba(34, 44, 58, 0.1);
+  }
+
+  .hotel-matrix-page .map-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.95rem;
+  }
+
+  .hotel-matrix-page .zone-map {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .hotel-matrix-page .zone-card,
+  .hotel-matrix-page .combo-card {
+    border: 1px solid var(--matrix-line);
+    border-radius: 1.15rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.58);
+  }
+
+  .hotel-matrix-page .zone-card.city {
+    background: linear-gradient(180deg, rgba(242, 246, 250, 0.92), rgba(251, 252, 252, 0.85));
+  }
+
+  .hotel-matrix-page .zone-card.north {
+    background: linear-gradient(180deg, rgba(231, 247, 249, 0.92), rgba(248, 252, 252, 0.85));
+  }
+
+  .hotel-matrix-page .zone-card.middle {
+    background: linear-gradient(180deg, rgba(243, 248, 235, 0.92), rgba(251, 252, 248, 0.85));
+  }
+
+  .hotel-matrix-page .zone-card.south {
+    background: linear-gradient(180deg, rgba(251, 243, 232, 0.92), rgba(252, 249, 245, 0.85));
+  }
+
+  .hotel-matrix-page .chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .hotel-matrix-page .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--matrix-line);
+  }
+
+  .hotel-matrix-page .chip strong {
+    color: var(--matrix-muted);
+    font-size: 0.68rem;
+  }
+
+  .hotel-matrix-page .table-wrap {
+    overflow: hidden;
+  }
+
+  .hotel-matrix-page .scroll {
+    overflow: auto;
+  }
+
+  .hotel-matrix-page table {
+    width: 100%;
+    min-width: 1380px;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .hotel-matrix-page thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: linear-gradient(180deg, #f9fbfb, #f0f6f7);
+    color: #20424a;
+    text-align: left;
+    padding: 0.9rem 0.75rem;
+    border-bottom: 1px solid var(--matrix-line);
+    white-space: nowrap;
+  }
+
+  .hotel-matrix-page tbody td {
+    padding: 0.9rem 0.75rem;
+    border-bottom: 1px solid var(--matrix-line);
+    vertical-align: top;
+  }
+
+  .hotel-matrix-page tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.38);
+  }
+
+  .hotel-matrix-page tbody tr:hover {
+    background: rgba(15, 118, 136, 0.05);
+  }
+
+  .hotel-matrix-page .hotel {
+    min-width: 15rem;
+  }
+
+  .hotel-matrix-page .hotel .cn {
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .hotel-matrix-page .hotel .en {
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .hotel-matrix-page .zone {
+    min-width: 8rem;
+    font-size: 0.83rem;
+  }
+
+  .hotel-matrix-page .price {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hotel-matrix-page .signal {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    padding: 0.34rem 0.68rem;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .hotel-matrix-page .signal.strong {
+    color: var(--matrix-ok);
+    background: rgba(31, 143, 99, 0.1);
+    border-color: rgba(31, 143, 99, 0.16);
+  }
+
+  .hotel-matrix-page .signal.medium {
+    color: var(--matrix-warn);
+    background: rgba(183, 122, 16, 0.1);
+    border-color: rgba(183, 122, 16, 0.14);
+  }
+
+  .hotel-matrix-page .signal.weak {
+    color: var(--matrix-bad);
+    background: rgba(179, 58, 58, 0.08);
+    border-color: rgba(179, 58, 58, 0.12);
+  }
+
+  .hotel-matrix-page .summary {
+    min-width: 18rem;
+    line-height: 1.55;
+  }
+
+  .hotel-matrix-page .fit {
+    min-width: 10rem;
+    line-height: 1.55;
+  }
+
+  .hotel-matrix-page .tag {
+    background: rgba(200, 75, 49, 0.08);
+    color: var(--matrix-accent);
+    border-color: rgba(200, 75, 49, 0.12);
+    margin-bottom: 0.5rem;
+  }
+
+  .hotel-matrix-page .muted-tag {
+    background: rgba(15, 118, 136, 0.06);
+    color: var(--matrix-muted);
+    border-color: rgba(34, 44, 58, 0.12);
+  }
+
+  .hotel-matrix-page .links {
+    min-width: 12rem;
+  }
+
+  .hotel-matrix-page .links a {
+    display: inline-block;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding: 0.42rem 0.7rem;
+    border-radius: 0.7rem;
+    background: rgba(213, 139, 56, 0.08);
+    border: 1px solid rgba(213, 139, 56, 0.16);
+    color: #8a5b17;
+    font-size: 0.76rem;
+  }
+
+  .hotel-matrix-page .links a.primary {
+    background: rgba(15, 118, 136, 0.08);
+    border-color: rgba(15, 118, 136, 0.12);
+    color: var(--matrix-sea);
+  }
+
+  .hotel-matrix-page .combo-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0.9rem;
+  }
+
+  .hotel-matrix-page .combo-total {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--matrix-sea);
+    margin-bottom: 0.35rem;
+  }
+
+  .hotel-matrix-page .recommend p {
+    margin-bottom: 0.5rem;
+  }
+
+  .hotel-matrix-page .footer-note {
+    margin: 0;
+    font-size: 0.88rem;
+  }
+
+  .hotel-matrix-page .mobile-explainer {
+    display: none;
+  }
+
+  .hotel-matrix-page .mobile-list {
+    display: none;
+    gap: 0.9rem;
+  }
+
+  .hotel-matrix-page .mobile-card {
+    padding: 1rem;
+  }
+
+  .hotel-matrix-page .mobile-card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: flex-start;
+    margin-bottom: 0.9rem;
+  }
+
+  .hotel-matrix-page .mobile-card-head h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.02rem;
+  }
+
+  .hotel-matrix-page .mobile-card-head p {
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .hotel-matrix-page .mobile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-bottom: 0.95rem;
+  }
+
+  .hotel-matrix-page .mobile-price-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+    margin-bottom: 0.95rem;
+  }
+
+  .hotel-matrix-page .mobile-price-item {
+    padding: 0.7rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--matrix-line);
+  }
+
+  .hotel-matrix-page .mobile-price-item span {
+    display: block;
+    color: var(--matrix-muted);
+    font-size: 0.74rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .hotel-matrix-page .mobile-price-item strong {
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hotel-matrix-page .mobile-summary {
+    margin-bottom: 0.95rem;
+  }
+
+  .hotel-matrix-page .mobile-summary h4 {
+    margin: 0 0 0.45rem;
+    font-size: 0.85rem;
+  }
+
+  .hotel-matrix-page .mobile-summary li {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .hotel-matrix-page .mobile-links {
+    min-width: 0;
+  }
+
+  @media (max-width: 1080px) {
+    .hotel-matrix-page .grid,
+    .hotel-matrix-page .combo-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hotel-matrix-page .zone-map {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hotel-matrix-page .mobile-explainer,
+    .hotel-matrix-page .mobile-list {
+      display: grid;
+    }
+
+    .hotel-matrix-page .table-wrap {
+      display: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hotel-matrix-page {
+      gap: 0.9rem;
+    }
+
+    .hotel-matrix-page .hero,
+    .hotel-matrix-page .panel-card,
+    .hotel-matrix-page .map-wrap,
+    .hotel-matrix-page .controls,
+    .hotel-matrix-page .mobile-card,
+    .hotel-matrix-page .mobile-explainer {
+      padding: 1rem;
+      border-radius: 1.2rem;
+    }
+
+    .hotel-matrix-page .legend,
+    .hotel-matrix-page .zone-map,
+    .hotel-matrix-page .mobile-price-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hotel-matrix-page .meta,
+    .hotel-matrix-page .filter-row,
+    .hotel-matrix-page .mobile-tags {
+      gap: 0.5rem;
+    }
+
+    .hotel-matrix-page .button,
+    .hotel-matrix-page .pill,
+    .hotel-matrix-page .tag {
+      font-size: 0.78rem;
+    }
+  }
+</style>
