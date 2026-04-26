@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>岘港酒店矩阵 2026-05 修订版</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --ink: #1f2528;
+      --muted: #667176;
+      --line: #dfe3df;
+      --panel: #ffffff;
+      --accent: #1f7a6b;
+      --warm: #b86135;
+      --soft: #eef4f1;
+      --warn: #f7eee7;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", sans-serif; color: var(--ink); background: var(--bg); }
+    .page { max-width: 1480px; margin: 0 auto; padding: 28px 20px 52px; }
+    header { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: end; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.2; letter-spacing: 0; }
+    .lede { margin: 0; color: var(--muted); line-height: 1.7; max-width: 900px; }
+    .stamp { text-align: right; color: var(--muted); font-size: 13px; line-height: 1.7; }
+    .summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 18px 0; }
+    .metric { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+    .metric b { display: block; font-size: 22px; margin-bottom: 4px; }
+    .metric span { color: var(--muted); font-size: 13px; }
+    .filters { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+    .filter-row { display: grid; grid-template-columns: 100px 1fr; gap: 12px; align-items: start; padding: 8px 0; border-bottom: 1px solid #edf0ed; }
+    .filter-row:last-child { border-bottom: 0; }
+    .filter-label { color: var(--muted); font-size: 13px; padding-top: 7px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 8px; padding: 7px 10px; font-size: 13px; cursor: pointer; }
+    .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin: 18px 0 8px; }
+    h2 { margin: 0; font-size: 20px; letter-spacing: 0; }
+    .note { color: var(--muted); font-size: 13px; }
+    .table-wrap { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: auto; }
+    table { width: 100%; min-width: 1320px; border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #edf0ed; padding: 11px 12px; vertical-align: top; font-size: 13px; line-height: 1.45; }
+    th { position: sticky; top: 0; z-index: 2; background: #f2f5f2; color: #3e494d; text-align: left; white-space: nowrap; }
+    th.num, td.num { text-align: right; white-space: nowrap; }
+    .hotel-cell { position: sticky; left: 0; z-index: 1; background: #fff; min-width: 250px; }
+    th.hotel-head { position: sticky; left: 0; z-index: 3; }
+    .hotel-name { font-weight: 700; font-size: 14px; }
+    .hotel-en { color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .links { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+    a { color: #116b8f; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .pill { display: inline-flex; border-radius: 999px; background: var(--soft); color: var(--accent); padding: 4px 8px; white-space: nowrap; }
+    .compact-list { display: grid; gap: 5px; min-width: 180px; }
+    .compact-list span::before { content: "· "; color: var(--accent); }
+    .muted-list span::before { color: var(--warm); }
+    .plans { margin-top: 28px; display: grid; gap: 12px; }
+    .plan { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+    .plan h3 { margin: 0; font-size: 18px; letter-spacing: 0; }
+    .plan p { margin: 6px 0 0; color: var(--muted); line-height: 1.6; }
+    .reason { max-width: 980px; }
+    .plan-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .plan-grid div { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: #fbfcfb; min-height: 88px; }
+    .plan-grid strong, .plan-grid span, .plan-grid b { display: block; }
+    .plan-grid span { margin: 7px 0; color: #344044; }
+    .plan-grid b { color: var(--accent); }
+    .hidden { display: none; }
+    .legend { background: var(--warn); border: 1px solid #edd6c6; border-radius: 8px; padding: 12px; color: #6e4d39; margin: 12px 0 0; font-size: 13px; line-height: 1.7; }
+    .region-guide { margin: 18px 0 8px; }
+    .region-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .region-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+    .region-head { display: flex; justify-content: space-between; align-items: start; gap: 10px; margin-bottom: 10px; }
+    .region-head h3 { margin: 0; font-size: 15px; letter-spacing: 0; }
+    .region-head span { color: var(--muted); font-size: 12px; white-space: nowrap; }
+    .region-card dl { display: grid; gap: 8px; margin: 0; }
+    .region-card div { display: grid; gap: 2px; }
+    .region-card dt { color: var(--muted); font-size: 12px; }
+    .region-card dd { margin: 0; font-size: 13px; line-height: 1.55; }
+    .examples { margin: 10px 0 0; color: var(--accent); font-size: 12px; line-height: 1.5; }
+    @media (max-width: 820px) {
+      .page { padding: 18px 12px 40px; }
+      header { grid-template-columns: 1fr; }
+      .stamp { text-align: left; }
+      .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .region-grid { grid-template-columns: 1fr; }
+      .filter-row { grid-template-columns: 1fr; gap: 6px; }
+      .plan-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div>
+        <h1>岘港酒店矩阵 2026-05</h1>
+        <p class="lede">5/2 晚到，5/7 下午 4 点离开。主目标是海边躺平，中间可安排会安一日往返。修订版把酒店池扩到 20 家，并把方案放在酒店表之后。</p>
+      </div>
+      <div class="stamp">价格抓取：2026-04-26<br/>口径：Trip 单晚含税总价，2 成人</div>
+    </header>
+
+    <section class="summary">
+      <div class="metric"><b>20</b><span>候选酒店</span></div>
+      <div class="metric"><b>¥535</b><span>当前最低推荐均价</span></div>
+      <div class="metric"><b>3 组</b><span>筛选：类型 / 地理区域 / 来源证据</span></div>
+      <div class="metric"><b>5 套</b><span>最终组合放在表格后</span></div>
+    </section>
+
+    <section class="region-guide">
+      <div class="toolbar">
+        <h2>区域怎么选</h2>
+        <div class="note">先按区域气质排除，再回到价格矩阵看具体酒店</div>
+      </div>
+      <div class="region-grid">
+        <article class="region-card">
+    <div class="region-head">
+      <h3>美溪核心段</h3>
+      <span>3 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>城市海滩酒店、海景楼、性价比酒店</dd></div>
+      <div><dt>整体感觉</dt><dd>最适合第一次来岘港躺海边，出门吃饭、打车、去咖啡店都方便。</dd></div>
+      <div><dt>适合</dt><dd>不想折腾、想每天随时去沙滩、预算 500-800 的主住区。</dd></div>
+      <div><dt>注意</dt><dd>不是封闭式 resort，沙滩公共性更强，度假感靠酒店本身补。</dd></div>
+    </dl>
+    <p class="examples">本表例子：岘港 HAIAN 海滩酒店 / 岘港 TMS 海滩酒店 / 岘港萨拉海滩酒店</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>美溪北段</h3>
+      <span>5 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>品牌海景楼、中高层海景酒店、北段性价比候选</dd></div>
+      <div><dt>整体感觉</dt><dd>比核心段略安静，海景楼多，去山茶半岛方向更顺。</dd></div>
+      <div><dt>适合</dt><dd>想要海景/品牌感，但又不想住到南边 resort 的人。</dd></div>
+      <div><dt>注意</dt><dd>部分位置周边餐饮密度不如核心段，晚到第一晚要特别看价格跳涨。</dd></div>
+    </dl>
+    <p class="examples">本表例子：岘港佩尼苏拉酒店 / 岘港丽笙酒店 / 岘港福朋喜来登</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>美溪南段 / Bac My An</h3>
+      <span>4 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>老牌度假村、海滩 resort、南段品牌酒店</dd></div>
+      <div><dt>整体感觉</dt><dd>更接近度假村带，安静，离海滩和 resort 设施更近。</dd></div>
+      <div><dt>适合</dt><dd>愿意为泳池、私密感、酒店设施加一点预算。</dd></div>
+      <div><dt>注意</dt><dd>吃饭和逛街不如美溪核心段随手，价格通常高一档。</dd></div>
+    </dl>
+    <p class="examples">本表例子：岘港铂尔曼海滩度假村 / 岘港富丽华度假村 / Premier Village 岘港度假村</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>Non Nuoc / 五行山海滩</h3>
+      <span>4 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>大型度假村、国际品牌、会安方向海滩酒店</dd></div>
+      <div><dt>整体感觉</dt><dd>更像“专门去住酒店”的区域，海滩长、酒店尺度大，离会安方向更顺。</dd></div>
+      <div><dt>适合</dt><dd>想安排会安一日游，同时愿意把酒店当目的地。</dd></div>
+      <div><dt>注意</dt><dd>离美溪核心和市区更远，不适合每天频繁进城吃喝。</dd></div>
+    </dl>
+    <p class="examples">本表例子：岘港喜来登海滩度假村 / 岘港美利亚海滩度假村 / 岘港万豪度假村</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>Non Nuoc / 会安方向</h3>
+      <span>1 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>设计感 resort、安静型度假酒店</dd></div>
+      <div><dt>整体感觉</dt><dd>介于岘港和会安之间，适合后半程放慢节奏。</dd></div>
+      <div><dt>适合</dt><dd>想把会安安排得更顺，或想从城市海滩切到更安静的度假氛围。</dd></div>
+      <div><dt>注意</dt><dd>如果每天主要想在美溪玩，会觉得位置偏。</dd></div>
+    </dl>
+    <p class="examples">本表例子：纳曼度假村</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>Dien Ban / 会安方向</h3>
+      <span>1 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>会安方向海滩 resort</dd></div>
+      <div><dt>整体感觉</dt><dd>更偏会安外海滩度假，不是典型岘港市区海滩体验。</dd></div>
+      <div><dt>适合</dt><dd>行程后段重点转向会安，且接受远离岘港市区。</dd></div>
+      <div><dt>注意</dt><dd>不适合作为全程岘港海边躺平主住。</dd></div>
+    </dl>
+    <p class="examples">本表例子：Grandvrio 海洋度假村</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>山茶半岛</h3>
+      <span>1 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>目的地级奢华度假村</dd></div>
+      <div><dt>整体感觉</dt><dd>私密、自然感强，适合为了酒店本身而住。</dd></div>
+      <div><dt>适合</dt><dd>明确想加预算种草洲际这类酒店体验。</dd></div>
+      <div><dt>注意</dt><dd>离常规吃喝和美溪生活圈远，价格也完全不是 700-800 档。</dd></div>
+    </dl>
+    <p class="examples">本表例子：岘港阳光半岛洲际度假酒店</p>
+  </article>
+<article class="region-card">
+    <div class="region-head">
+      <h3>岘港湾北侧</h3>
+      <span>1 家候选</span>
+    </div>
+    <dl>
+      <div><dt>酒店类型</dt><dd>主题度假、水乐园、亲子设施型酒店</dd></div>
+      <div><dt>整体感觉</dt><dd>和美溪海滩主线不同，更偏主题体验。</dd></div>
+      <div><dt>适合</dt><dd>亲子、温泉水乐园、日式主题设施取向。</dd></div>
+      <div><dt>注意</dt><dd>不适合以美溪沙滩、海边餐饮和经典岘港度假动线为主的行程。</dd></div>
+    </dl>
+    <p class="examples">本表例子：三日月日式度假村</p>
+  </article>
+      </div>
+    </section>
+
+    <section class="filters">
+      <div class="filter-row"><div class="filter-label">酒店类型</div><div class="chips"><button class="chip" type="button" data-filter="category" data-value="预算海边">预算海边</button><button class="chip" type="button" data-filter="category" data-value="品牌海景">品牌海景</button><button class="chip" type="button" data-filter="category" data-value="度假村">度假村</button><button class="chip" type="button" data-filter="category" data-value="主题度假">主题度假</button><button class="chip" type="button" data-filter="category" data-value="别墅度假">别墅度假</button><button class="chip" type="button" data-filter="category" data-value="奢华种草">奢华种草</button></div></div>
+      <div class="filter-row"><div class="filter-label">地理区域</div><div class="chips"><button class="chip" type="button" data-filter="area" data-value="美溪北段">美溪北段</button><button class="chip" type="button" data-filter="area" data-value="美溪核心段">美溪核心段</button><button class="chip" type="button" data-filter="area" data-value="Non Nuoc / 会安方向">Non Nuoc / 会安方向</button><button class="chip" type="button" data-filter="area" data-value="Dien Ban / 会安方向">Dien Ban / 会安方向</button><button class="chip" type="button" data-filter="area" data-value="Non Nuoc / 五行山海滩">Non Nuoc / 五行山海滩</button><button class="chip" type="button" data-filter="area" data-value="美溪南段 / Bac My An">美溪南段 / Bac My An</button><button class="chip" type="button" data-filter="area" data-value="岘港湾北侧">岘港湾北侧</button><button class="chip" type="button" data-filter="area" data-value="山茶半岛">山茶半岛</button></div></div>
+      <div class="filter-row"><div class="filter-label">来源证据</div><div class="chips"><button class="chip" type="button" data-filter="evidence" data-value="对比帖常见">对比帖常见</button><button class="chip" type="button" data-filter="evidence" data-value="补充候选">补充候选</button><button class="chip" type="button" data-filter="evidence" data-value="多篇/专门笔记">多篇/专门笔记</button><button class="chip" type="button" data-filter="evidence" data-value="外部知名+价格验证">外部知名+价格验证</button><button class="chip" type="button" data-filter="evidence" data-value="外部知名，Trip 未可靠匹配">外部知名，Trip 未可靠匹配</button></div></div>
+      <div class="legend">“来源证据”替代上一版的“小红书强度”：多篇/专门笔记 = 小红书里有专门测评或多次出现；对比帖常见 = 常在决赛圈/合集里出现；外部知名+价格验证 = 不是小红书高频主线，但属于知名度假村且 Trip 价格匹配可靠；价格待核 = 自动价格匹配不可靠。</div>
+    </section>
+
+    <div class="toolbar">
+      <h2>酒店价格矩阵</h2>
+      <div class="note" id="countText">20 家酒店</div>
+    </div>
+    <section class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="hotel-head">酒店</th><th>类型</th><th>位置</th>
+            <th class="num">5/2</th><th class="num">5/3</th><th class="num">5/4</th><th class="num">5/5</th><th class="num">5/6</th>
+            <th class="num">5晚合计</th><th class="num">可订均价</th><th>价格状态</th><th>来源证据</th><th>定位</th><th>优点</th><th>注意</th>
+          </tr>
+        </thead>
+        <tbody id="hotelRows">
+          <tr data-category="预算海边" data-area="美溪北段" data-evidence="对比帖常见" data-price="2809">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港佩尼苏拉酒店</div>
+      <div class="hotel-en">Peninsula Hotel Danang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=100027488&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Peninsula%20Hotel%20Danang" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/67ce589700000000290172ce?xsec_token=ABRv618Z8t8Xt3A7_GZIHWQtcAk2gCwzfA6u3pEf2MDLo=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港酒店测评</a><a href="https://www.xiaohongshu.com/search_result/688de9fb000000002502b163?xsec_token=AB0RewMqoWccsaLYOWZxLA1M-Px4IE22x_tNaMwbLX0wU=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港酒店决赛圈</a></div>
+    </td>
+    <td><span class="pill">预算海边</span></td>
+    <td>美溪北段</td>
+    <td class="num">¥566</td><td class="num">¥641</td><td class="num">¥534</td><td class="num">¥534</td><td class="num">¥534</td>
+    <td class="num">¥2809</td>
+    <td class="num">¥561</td>
+    <td>预算内</td>
+    <td>对比帖常见</td>
+    <td>北段海边线，价格最稳，5 晚全程含早，适合不想折腾。</td>
+    <td>
+      <div class="compact-list"><span>5 晚价格都压在预算内</span><span>Trip 返回含早房型多</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>不是纯度假村</span><span>北段生活便利度通常弱于美溪核心段</span></div>
+    </td>
+  </tr>
+<tr data-category="预算海边" data-area="美溪北段" data-evidence="补充候选" data-price="3410">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港丽笙酒店</div>
+      <div class="hotel-en">Radisson Hotel Danang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=70920349&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Radisson%20Hotel%20Danang" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/68de44cf000000000703a725?xsec_token=ABWrAOVnZbIFIu5wyyRJj69s9qiBS9QtXsEFeETe6fcuw=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港红黑榜</a><a href="https://www.trip.com/hotels/detail/?hotelId=70920349&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">预算海边</span></td>
+    <td>美溪北段</td>
+    <td class="num">¥987</td><td class="num">¥766</td><td class="num">¥592</td><td class="num">¥540</td><td class="num">¥525</td>
+    <td class="num">¥3410</td>
+    <td class="num">¥606</td>
+    <td>备选</td>
+    <td>补充候选</td>
+    <td>北段性价比酒店，后段 500-600，适合预算优先。</td>
+    <td>
+      <div class="compact-list"><span>价格稳定低于预算</span><span>适合作为保底选择</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>本轮小红书高频证据弱于 Peninsula/Sala/TMS/voco/福朋</span><span>最低价不含早且不可取消</span></div>
+    </td>
+  </tr>
+<tr data-category="预算海边" data-area="美溪核心段" data-evidence="补充候选" data-price="6479">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港 HAIAN 海滩酒店</div>
+      <div class="hotel-en">HAIAN Beach Hotel &amp; Spa</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=20027768&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20HAIAN%20Beach%20Hotel" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/68cc11c0000000001201f8ad?xsec_token=ABEWg_bikyX8KbpPf3EsLv9H8rVAi7cwWmxVWeELSsqeU=&amp;xsec_source=" target="_blank" rel="noreferrer">美溪沙滩酒店推荐</a><a href="https://www.trip.com/hotels/detail/?hotelId=20027768&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">预算海边</span></td>
+    <td>美溪核心段</td>
+    <td class="num">¥3935</td><td class="num">¥782</td><td class="num">¥726</td><td class="num">¥505</td><td class="num">¥531</td>
+    <td class="num">¥6479</td>
+    <td class="num">¥636</td>
+    <td>5/2跳价</td>
+    <td>补充候选</td>
+    <td>美溪海边，5/3 后含早可取消，但 5/2 只抓到高价三卧公寓。</td>
+    <td>
+      <div class="compact-list"><span>5/3 后含早可取消</span><span>美溪海边位置实用</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2 极不适合</span><span>本轮小红书高频度不如其他几家</span></div>
+    </td>
+  </tr>
+<tr data-category="预算海边" data-area="美溪核心段" data-evidence="对比帖常见" data-price="3588">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港 TMS 海滩酒店</div>
+      <div class="hotel-en">TMS Hotel Da Nang Beach</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=24529624&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20TMS%20Hotel%20Da%20Nang%20Beach" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/681af932000000000c03a37b?xsec_token=ABzGs4vsi2enuYNosaDxxDAOoSRM8j5OBhtI07ITieXKs=&amp;xsec_source=" target="_blank" rel="noreferrer">差价三倍酒店怎么选</a><a href="https://www.xiaohongshu.com/search_result/68ee1584000000000302e59d?xsec_token=ABJPYkq1u5pUqigtPJHnfjAfkJ2Vwxed7V368_WwQ3jNQ=&amp;xsec_source=" target="_blank" rel="noreferrer">美溪沙滩对面推荐</a></div>
+    </td>
+    <td><span class="pill">预算海边</span></td>
+    <td>美溪核心段</td>
+    <td class="num">¥726</td><td class="num">¥863</td><td class="num">¥674</td><td class="num">¥674</td><td class="num">¥651</td>
+    <td class="num">¥3588</td>
+    <td class="num">¥716</td>
+    <td>预算边缘</td>
+    <td>对比帖常见</td>
+    <td>美溪核心，Trip 返回多为套房/阳台房型，适合想住宽一点但不去度假村。</td>
+    <td>
+      <div class="compact-list"><span>5 晚均价仍在 700 左右</span><span>房型面积通常比普通城景房友好</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/3 超过 800</span><span>多数最低价不含早</span></div>
+    </td>
+  </tr>
+<tr data-category="预算海边" data-area="美溪核心段" data-evidence="对比帖常见" data-price="4022">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港萨拉海滩酒店</div>
+      <div class="hotel-en">Sala Danang Beach Hotel</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=34994003&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Sala%20Danang%20Beach%20Hotel" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/68cc11c0000000001201f8ad?xsec_token=ABEWg_bikyX8KbpPf3EsLv9H8rVAi7cwWmxVWeELSsqeU=&amp;xsec_source=" target="_blank" rel="noreferrer">美溪沙滩酒店推荐</a><a href="https://www.xiaohongshu.com/search_result/67ce589700000000290172ce?xsec_token=ABRv618Z8t8Xt3A7_GZIHWQtcAk2gCwzfA6u3pEf2MDLo=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港酒店测评</a></div>
+    </td>
+    <td><span class="pill">预算海边</span></td>
+    <td>美溪核心段</td>
+    <td class="num">¥868</td><td class="num">¥1662</td><td class="num">¥558</td><td class="num">¥467</td><td class="num">¥467</td>
+    <td class="num">¥4022</td>
+    <td class="num">¥789</td>
+    <td>后段低价</td>
+    <td>对比帖常见</td>
+    <td>美溪海边生活圈，5/4 后价格很好，早餐和海边便利性适合后段躺平。</td>
+    <td>
+      <div class="compact-list"><span>5/4-5/6 性价比很高</span><span>含早</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/3 单晚明显跳涨</span><span>城市海滩酒店，不是封闭 resort</span></div>
+    </td>
+  </tr>
+<tr data-category="品牌海景" data-area="美溪北段" data-evidence="多篇/专门笔记" data-price="4091">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港福朋喜来登</div>
+      <div class="hotel-en">Four Points by Sheraton Danang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=22153383&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E7%A6%8F%E6%9C%8B%E5%96%9C%E6%9D%A5%E7%99%BB" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/69999781000000001b01d9d5?xsec_token=ABIyQhHmWqvmBtB-rcj_FTBdF5wRYKV6GRzNDQ_QwN0-Y=&amp;xsec_source=" target="_blank" rel="noreferrer">福朋海景阳台日出</a><a href="https://www.xiaohongshu.com/search_result/69317773000000001e0032ab?xsec_token=ABQT9a45Jd0daOg3fzQfIM1EBxPrg3bRLgCAah9T8BWZ8=&amp;xsec_source=" target="_blank" rel="noreferrer">VOCO &amp; 福朋入住体验</a></div>
+    </td>
+    <td><span class="pill">品牌海景</span></td>
+    <td>美溪北段</td>
+    <td class="num">¥1708</td><td class="num">¥694</td><td class="num">¥591</td><td class="num">¥549</td><td class="num">¥549</td>
+    <td class="num">¥4091</td>
+    <td class="num">¥596</td>
+    <td>5/2跳价</td>
+    <td>多篇/专门笔记</td>
+    <td>品牌高层海景/阳台路线，5/3 后价格回到合理区间。</td>
+    <td>
+      <div class="compact-list"><span>有专门海景阳台笔记</span><span>5/3-5/6 价格很稳</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2 只剩高价房型</span><span>多数最低价不含早</span></div>
+    </td>
+  </tr>
+<tr data-category="品牌海景" data-area="美溪北段" data-evidence="多篇/专门笔记" data-price="4167">
+    <td class="hotel-cell">
+      <div class="hotel-name">voco Ma Belle 岘港</div>
+      <div class="hotel-en">voco Ma Belle Danang by IHG</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=104994673&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Voco%20Ma%20Belle" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/6869e31f0000000012023eac?xsec_token=ABCTO-FIvqGlPr7J8hauZoHlSK72JVH-mHkfWA4o_AoMQ=&amp;xsec_source=" target="_blank" rel="noreferrer">Voco Ma Belle by IHG</a><a href="https://www.xiaohongshu.com/search_result/69317773000000001e0032ab?xsec_token=ABQT9a45Jd0daOg3fzQfIM1EBxPrg3bRLgCAah9T8BWZ8=&amp;xsec_source=" target="_blank" rel="noreferrer">VOCO &amp; 福朋入住体验</a></div>
+    </td>
+    <td><span class="pill">品牌海景</span></td>
+    <td>美溪北段</td>
+    <td class="num">¥1395</td><td class="num">¥1109</td><td class="num">¥568</td><td class="num">¥534</td><td class="num">¥561</td>
+    <td class="num">¥4167</td>
+    <td class="num">¥693</td>
+    <td>后段低价</td>
+    <td>多篇/专门笔记</td>
+    <td>IHG 旗下，5/4 后价格很好，适合 2+3 后段品牌酒店切入。</td>
+    <td>
+      <div class="compact-list"><span>有专门小红书入住笔记</span><span>5/4 后降到 500 多</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2-5/3 明显贵</span><span>最低价多为不含早且不可取消</span></div>
+    </td>
+  </tr>
+<tr data-category="品牌海景" data-area="美溪北段" data-evidence="多篇/专门笔记" data-price="5062">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港希尔顿花园酒店</div>
+      <div class="hotel-en">Hilton Garden Inn Da Nang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=47891337&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E5%B8%8C%E5%B0%94%E9%A1%BF%E8%8A%B1%E5%9B%AD" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/695a25f4000000001e005b80?xsec_token=ABvkMRDtWZ49b9pkcoV1WHyPRng1BoeBLqOjUGP36eQuk=&amp;xsec_source=" target="_blank" rel="noreferrer">真实测评希尔顿花园</a><a href="https://www.xiaohongshu.com/search_result/6967883e000000001a02f089?xsec_token=ABpTWs4KuoJboYc7WKQQiorSsoERVzKErJPtYqRBdUvRk=&amp;xsec_source=" target="_blank" rel="noreferrer">希尔顿花园人均200+</a></div>
+    </td>
+    <td><span class="pill">品牌海景</span></td>
+    <td>美溪北段</td>
+    <td class="num">¥1038</td><td class="num">¥1925</td><td class="num">¥1062</td><td class="num">¥555</td><td class="num">¥482</td>
+    <td class="num">¥5062</td>
+    <td class="num">¥1006</td>
+    <td>价格跳涨</td>
+    <td>多篇/专门笔记</td>
+    <td>北段海景楼，小红书有专门测评；但 5/3 和前段价格跳涨。</td>
+    <td>
+      <div class="compact-list"><span>有多篇专门测评/对比帖</span><span>海景和泳池传播度高</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/3 抓到套房高价，不适合全程</span><span>最低价多不含早且不可取消</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Non Nuoc / 会安方向" data-evidence="多篇/专门笔记" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">纳曼度假村</div>
+      <div class="hotel-en">Naman Retreat</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=2321451&amp;checkIn=2026-05-04&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E7%BA%B3%E6%9B%BC%E5%BA%A6%E5%81%87%E6%9D%91" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/68ea5752000000000300c491?xsec_token=ABcRxN9NSYVZN5nstu5dMsYtpMgkWwYwVIvgaC4nQynl8=&amp;xsec_source=" target="_blank" rel="noreferrer">纳曼度假村推荐</a><a href="https://www.xiaohongshu.com/search_result/66210f0000000000010070b7?xsec_token=ABJ_IN4BrJNGZkT4eOld9TbVZ4vSSlBA5e0nH3R-zgQrk=&amp;xsec_source=" target="_blank" rel="noreferrer">纳曼住进大自然</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Non Nuoc / 会安方向</td>
+    <td class="num">-</td><td class="num">-</td><td class="num">¥881</td><td class="num">¥881</td><td class="num">¥881</td>
+    <td class="num">-</td>
+    <td class="num">¥881</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>竹系设计感度假村，在岘港和会安之间；5/4 后 881 元，略超预算但比凯悦/富丽华温和。</td>
+    <td>
+      <div class="compact-list"><span>比顶奢度假村更接近预算</span><span>顺路会安方向</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2-5/3 Trip 显示售罄</span><span>后段仍略高于预算且最低价不含早</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Dien Ban / 会安方向" data-evidence="外部知名+价格验证" data-price="4648">
+    <td class="hotel-cell">
+      <div class="hotel-name">Grandvrio 海洋度假村</div>
+      <div class="hotel-en">Grandvrio Ocean Resort Danang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=11299009&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Grandvrio%20Ocean%20Resort" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.trip.com/hotels/detail/?hotelId=11299009&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Dien Ban / 会安方向</td>
+    <td class="num">¥1054</td><td class="num">¥1035</td><td class="num">¥853</td><td class="num">¥853</td><td class="num">¥853</td>
+    <td class="num">¥4648</td>
+    <td class="num">¥930</td>
+    <td>预算外</td>
+    <td>外部知名+价格验证</td>
+    <td>更靠会安方向的海边 resort，后段 853 元含早，接近预算上沿。</td>
+    <td>
+      <div class="compact-list"><span>后段含早价接近预算</span><span>去会安方向更顺</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>离美溪和市区远</span><span>中文高频度不如纳曼/凯悦/洲际</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Non Nuoc / 五行山海滩" data-evidence="外部知名+价格验证" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港喜来登海滩度假村</div>
+      <div class="hotel-en">Sheraton Grand Danang Beach Resort &amp; Spa</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=15691333&amp;checkIn=2026-05-03&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Sheraton%20Grand%20Danang" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/6901e6250000000004017816?xsec_token=ABn4tPgefWoeAs_rH_I54n-VJM3UBK9ADNn23u9czWWfE=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港 Top 5 海景五星</a><a href="https://www.trip.com/hotels/detail/?hotelId=15691333&amp;checkIn=2026-05-03&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Non Nuoc / 五行山海滩</td>
+    <td class="num">-</td><td class="num">¥1074</td><td class="num">¥1003</td><td class="num">¥969</td><td class="num">¥969</td>
+    <td class="num">-</td>
+    <td class="num">¥1004</td>
+    <td>预算外</td>
+    <td>外部知名+价格验证</td>
+    <td>南段大型品牌度假村，5/3 后约 969-1074 元，略高于预算。</td>
+    <td>
+      <div class="compact-list"><span>国际品牌度假村</span><span>后段价格比凯悦/富丽华低</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2 售罄</span><span>最低价多不含早</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Non Nuoc / 五行山海滩" data-evidence="外部知名+价格验证" data-price="5298">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港美利亚海滩度假村</div>
+      <div class="hotel-en">Melia Danang Beach Resort</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=2614627&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Melia%20Danang%20Beach%20Resort" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/6901e6250000000004017816?xsec_token=ABn4tPgefWoeAs_rH_I54n-VJM3UBK9ADNn23u9czWWfE=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港 Top 5 海景五星</a><a href="https://www.trip.com/hotels/detail/?hotelId=2614627&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Non Nuoc / 五行山海滩</td>
+    <td class="num">¥1306</td><td class="num">¥998</td><td class="num">¥998</td><td class="num">¥998</td><td class="num">¥998</td>
+    <td class="num">¥5298</td>
+    <td class="num">¥1059</td>
+    <td>预算外</td>
+    <td>外部知名+价格验证</td>
+    <td>南段海滩 resort，含早，5/3 后约 998 元，比顶奢便宜但仍超预算。</td>
+    <td>
+      <div class="compact-list"><span>南段海滩度假属性强</span><span>后段价格稳定且含早</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>仍超出 700-800 上限</span><span>会比美溪核心出门吃饭麻烦</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Non Nuoc / 五行山海滩" data-evidence="多篇/专门笔记" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港万豪度假村</div>
+      <div class="hotel-en">Danang Marriott Resort &amp; Spa</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=993558&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E4%B8%87%E8%B1%AA%20%E5%BA%A6%E5%81%87%E6%9D%91" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/699d8616000000001502180c?xsec_token=ABSnhNSG4AYyEuiUUnJ-0BRhMXORVY36Pzbn5oWS4bHNw=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港万豪度假感</a><a href="https://www.xiaohongshu.com/search_result/6950b8fb000000001e03bc07?xsec_token=ABH0t6bllQKBQYaVx-vZbrUIUzguHXiXH7bpBIvGJtkkQ=&amp;xsec_source=" target="_blank" rel="noreferrer">希尔顿花园和万豪测评</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Non Nuoc / 五行山海滩</td>
+    <td class="num">-</td><td class="num">-</td><td class="num">¥1296</td><td class="num">¥1132</td><td class="num">¥1081</td>
+    <td class="num">-</td>
+    <td class="num">¥1170</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>南边度假村路线，5/4 后有房但仍偏高，适合加预算体验。</td>
+    <td>
+      <div class="compact-list"><span>度假感强</span><span>适合真躺平和去会安方向</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>5/2-5/3 Trip 显示售罄</span><span>预算明显超出</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="美溪南段 / Bac My An" data-evidence="对比帖常见" data-price="7369">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港铂尔曼海滩度假村</div>
+      <div class="hotel-en">Pullman Danang Beach Resort</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=1877388&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Pullman%20Danang%20Beach%20Resort" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/68d2cc0200000000130124fb?xsec_token=ABDQbRdd-swiFWOz3_zd0BPQ-uQ4Ow8-vq4S8oW5k-NEg=&amp;xsec_source=" target="_blank" rel="noreferrer">岘港度假村推荐</a><a href="https://www.trip.com/hotels/detail/?hotelId=1877388&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>美溪南段 / Bac My An</td>
+    <td class="num">¥2133</td><td class="num">¥1858</td><td class="num">¥1175</td><td class="num">¥978</td><td class="num">¥1225</td>
+    <td class="num">¥7369</td>
+    <td class="num">¥1309</td>
+    <td>预算外</td>
+    <td>对比帖常见</td>
+    <td>海滩度假村/品牌候选，5/5 一晚接近 1000，其余仍偏高。</td>
+    <td>
+      <div class="compact-list"><span>品牌和海滩度假属性强</span><span>比凯悦/富丽华部分日期便宜</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>仍高于预算</span><span>最低价多不含早</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="美溪南段 / Bac My An" data-evidence="多篇/专门笔记" data-price="9227">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港富丽华度假村</div>
+      <div class="hotel-en">Furama Resort Danang</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=999113&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E5%AF%8C%E4%B8%BD%E5%8D%8E%20%E5%BA%A6%E5%81%87%E6%9D%91" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/676fea7e0000000014022325?xsec_token=ABdv6v9flt_b1ulVAzCtf63PxWm10zIDgFeSDxqQj2_yE=&amp;xsec_source=" target="_blank" rel="noreferrer">富丽华度假村</a><a href="https://www.trip.com/hotels/detail/?hotelId=999113&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>美溪南段 / Bac My An</td>
+    <td class="num">¥2440</td><td class="num">¥1949</td><td class="num">¥1906</td><td class="num">¥1560</td><td class="num">¥1372</td>
+    <td class="num">¥9227</td>
+    <td class="num">¥1697</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>老牌海滩度假村，真实躺平体验强，但价格超预算。</td>
+    <td>
+      <div class="compact-list"><span>小红书有专门笔记</span><span>海滩度假村体验比城市海景楼强</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>全程显著超预算</span><span>最低价多不含早且不可取消</span></div>
+    </td>
+  </tr>
+<tr data-category="度假村" data-area="Non Nuoc / 五行山海滩" data-evidence="多篇/专门笔记" data-price="13411">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港凯悦度假村</div>
+      <div class="hotel-en">Hyatt Regency Danang Resort and Spa</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=713826&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E5%87%AF%E6%82%A6%20%E5%BA%A6%E5%81%87%E6%9D%91" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/69e08348000000001a02a653?xsec_token=ABqai9D5JCG9RkiKRtamK-BduTrDaVW0-TmUbTYp_JGzA=&amp;xsec_source=" target="_blank" rel="noreferrer">凯悦酒店 tips</a><a href="https://www.xiaohongshu.com/search_result/6809bc9e000000001c002277?xsec_token=ABDSnH_GV4dNifn-p60r5st-QAC4vP2TSNJ59ApgGVhII=&amp;xsec_source=" target="_blank" rel="noreferrer">不出酒店的一天</a></div>
+    </td>
+    <td><span class="pill">度假村</span></td>
+    <td>Non Nuoc / 五行山海滩</td>
+    <td class="num">¥4675</td><td class="num">¥2177</td><td class="num">¥2794</td><td class="num">¥1765</td><td class="num">¥2000</td>
+    <td class="num">¥13411</td>
+    <td class="num">¥2184</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>度假村天花板候选之一，适合加预算躺平；本档期完全超预算。</td>
+    <td>
+      <div class="compact-list"><span>小红书高频且有多篇专门笔记</span><span>不出酒店躺平体验强</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>本档期价格完全不符合 700-800 预算</span><span>5/2 只抓到高价双卧海景房</span></div>
+    </td>
+  </tr>
+<tr data-category="主题度假" data-area="岘港湾北侧" data-evidence="外部知名+价格验证" data-price="6324">
+    <td class="hotel-cell">
+      <div class="hotel-name">三日月日式度假村</div>
+      <div class="hotel-en">Da Nang - Mikazuki Japanese Resorts &amp; Spa</div>
+      <div class="links"><a href="https://www.trip.com/hotels/detail/?hotelId=5448550&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Mikazuki%20%E4%B8%89%E6%97%A5%E6%9C%88" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.trip.com/hotels/detail/?hotelId=5448550&amp;checkIn=2026-05-02&amp;checkOut=2026-05-07&amp;adult=2&amp;children=0&amp;curr=CNY" target="_blank" rel="noreferrer">Trip 价格页</a></div>
+    </td>
+    <td><span class="pill">主题度假</span></td>
+    <td>岘港湾北侧</td>
+    <td class="num">¥1852</td><td class="num">¥1130</td><td class="num">¥1114</td><td class="num">¥1114</td><td class="num">¥1114</td>
+    <td class="num">¥6324</td>
+    <td class="num">¥1265</td>
+    <td>预算外</td>
+    <td>外部知名+价格验证</td>
+    <td>日式温泉/水乐园度假属性，位置不在美溪主线；更适合亲子/主题体验。</td>
+    <td>
+      <div class="compact-list"><span>主题设施明确</span><span>适合亲子或温泉水乐园取向</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>不适合以美溪海滩躺平为主的行程</span><span>价格超预算</span></div>
+    </td>
+  </tr>
+<tr data-category="别墅度假" data-area="美溪南段 / Bac My An" data-evidence="外部知名，Trip 未可靠匹配" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">Premier Village 岘港度假村</div>
+      <div class="hotel-en">Premier Village Danang Resort - Managed by Accor</div>
+      <div class="links"><a href="https://www.trip.com/hotels/list?cityName=Da%20Nang&amp;searchWord=Premier%20Village%20Danang%20Resort%20Managed%20by%20Accor" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20Premier%20Village%20Danang" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.trip.com/hotels/list?cityName=Da%20Nang&amp;searchWord=Premier%20Village%20Danang%20Resort%20Managed%20by%20Accor" target="_blank" rel="noreferrer">Trip 搜索</a></div>
+    </td>
+    <td><span class="pill">别墅度假</span></td>
+    <td>美溪南段 / Bac My An</td>
+    <td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">-</td>
+    <td class="num">-</td>
+    <td class="num">-</td>
+    <td>价格待核</td>
+    <td>外部知名，Trip 未可靠匹配</td>
+    <td>别墅型 Accor 度假村，理论上适合多人/家庭；本轮 Trip 命令多次错配，暂不参与价格和方案计算。</td>
+    <td>
+      <div class="compact-list"><span>别墅型产品，适合多人时另看</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>本轮自动价格匹配不可靠</span><span>两人预算旅行不优先</span></div>
+    </td>
+  </tr>
+<tr data-category="奢华种草" data-area="山茶半岛" data-evidence="多篇/专门笔记" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">岘港阳光半岛洲际度假酒店</div>
+      <div class="hotel-en">InterContinental Danang Sun Peninsula Resort by IHG</div>
+      <div class="links"><a href="https://www.trip.com/hotels/list?cityName=Da%20Nang&amp;searchWord=InterContinental%20Danang%20Sun%20Peninsula%20Resort" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20%E6%B4%B2%E9%99%85%20%E5%8D%8A%E5%B2%9B" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/69ec4d85000000003601b8d1?xsec_token=ABApZjHMPCpRf1aKje03V5Kxw88p-UcRIMBo6FKduh4RU=&amp;xsec_source=" target="_blank" rel="noreferrer">全球最美洲际</a><a href="https://www.xiaohongshu.com/search_result/68dcdaaf0000000004021a48?xsec_token=ABAcOKhMlpaL0eo92pGk7Uf56hFbf1djla3wwON7oYhd0=&amp;xsec_source=" target="_blank" rel="noreferrer">洲际值得吗</a></div>
+    </td>
+    <td><span class="pill">奢华种草</span></td>
+    <td>山茶半岛</td>
+    <td class="num">-</td><td class="num">-</td><td class="num">-</td><td class="num">¥4194</td><td class="num">¥4054</td>
+    <td class="num">-</td>
+    <td class="num">¥4124</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>山茶半岛封闭式奢华度假村，强种草属性；本档期前 3 晚无可靠可订价，后 2 晚明显预算外。</td>
+    <td>
+      <div class="compact-list"><span>小红书种草强，山茶半岛目的地酒店属性明显</span><span>适合专门为酒店体验加预算</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>明显超预算</span><span>离美溪核心和会安日常动线更远</span></div>
+    </td>
+  </tr>
+<tr data-category="奢华种草" data-area="美溪南段 / Bac My An" data-evidence="多篇/专门笔记" data-price="999999">
+    <td class="hotel-cell">
+      <div class="hotel-name">TIA 养生度假村</div>
+      <div class="hotel-en">TIA Wellness Resort - Spa Inclusive</div>
+      <div class="links"><a href="https://www.trip.com/hotels/list?cityName=Da%20Nang&amp;searchWord=TIA%20Wellness%20Resort%20Spa%20Inclusive" target="_blank" rel="noreferrer">Trip</a><a href="https://www.xiaohongshu.com/search_result?keyword=%E5%B2%98%E6%B8%AF%20TIA%20Wellness%20Resort" target="_blank" rel="noreferrer">小红书搜索</a><a href="https://www.xiaohongshu.com/search_result/67e2a0eb000000000900d078?xsec_token=AB4jl8Ga5BCrzbbmzZeeX_nxwUog5FOLVNVUL9Dgw_ySk=&amp;xsec_source=" target="_blank" rel="noreferrer">洲际 vs TIA</a><a href="https://www.trip.com/hotels/list?cityName=Da%20Nang&amp;searchWord=TIA%20Wellness%20Resort%20Spa%20Inclusive" target="_blank" rel="noreferrer">Trip 搜索</a></div>
+    </td>
+    <td><span class="pill">奢华种草</span></td>
+    <td>美溪南段 / Bac My An</td>
+    <td class="num">-</td><td class="num">¥13303</td><td class="num">¥6637</td><td class="num">¥3444</td><td class="num">¥2994</td>
+    <td class="num">-</td>
+    <td class="num">¥6595</td>
+    <td>预算外</td>
+    <td>多篇/专门笔记</td>
+    <td>主打 wellness/spa 的高端度假村；价格远超本次预算，只适合作为加预算体验项。</td>
+    <td>
+      <div class="compact-list"><span>外部和小红书都属于高辨识度 wellness resort</span><span>适合明确想做 SPA/疗愈体验</span></div>
+    </td>
+    <td>
+      <div class="compact-list muted-list"><span>本档期完全不符合预算</span><span>不适合作为这次主住方案</span></div>
+    </td>
+  </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="plans">
+      <div class="toolbar">
+        <h2>组合方案</h2>
+        <div class="note">按你的预算和晚到条件倒推，不受上方筛选影响</div>
+      </div>
+      <article class="plan" data-plan-total="2675">
+    <div class="plan-head">
+      <div>
+        <h3>我最推荐：3+2 最省且只换一次</h3>
+        <p>3+2 · 总价 ¥2675 · 均价 ¥535</p>
+      </div>
+    </div>
+    <p class="reason">5/2-5/4 住 Peninsula，晚到和周末都稳住；5/5-5/6 切到 Sala，最后两晚回到美溪核心海边，价格最低。</p>
+    <div class="plan-grid">
+      <div><strong>5/2</strong><span>岘港佩尼苏拉酒店</span><b>¥566</b></div><div><strong>5/3</strong><span>岘港佩尼苏拉酒店</span><b>¥641</b></div><div><strong>5/4</strong><span>岘港佩尼苏拉酒店</span><b>¥534</b></div><div><strong>5/5</strong><span>岘港萨拉海滩酒店</span><b>¥467</b></div><div><strong>5/6</strong><span>岘港萨拉海滩酒店</span><b>¥467</b></div>
+    </div>
+  </article>
+<article class="plan" data-plan-total="2809">
+    <div class="plan-head">
+      <div>
+        <h3>最省脑子：Peninsula 全程</h3>
+        <p>5晚同住 · 总价 ¥2809 · 均价 ¥562</p>
+      </div>
+    </div>
+    <p class="reason">全程不换酒店，5 晚都在预算内，且 Trip 抓到的房型全含早；比折腾换酒店只贵约 134 元。</p>
+    <div class="plan-grid">
+      <div><strong>5/2</strong><span>岘港佩尼苏拉酒店</span><b>¥566</b></div><div><strong>5/3</strong><span>岘港佩尼苏拉酒店</span><b>¥641</b></div><div><strong>5/4</strong><span>岘港佩尼苏拉酒店</span><b>¥534</b></div><div><strong>5/5</strong><span>岘港佩尼苏拉酒店</span><b>¥534</b></div><div><strong>5/6</strong><span>岘港佩尼苏拉酒店</span><b>¥534</b></div>
+    </div>
+  </article>
+<article class="plan" data-plan-total="2699">
+    <div class="plan-head">
+      <div>
+        <h3>更像海边度假：2+3 Peninsula + Sala</h3>
+        <p>2+3 · 总价 ¥2699 · 均价 ¥540</p>
+      </div>
+    </div>
+    <p class="reason">前两晚处理晚到和 5/3 跳价，后 3 晚住 Sala 的美溪核心段，含早，整体仍很便宜。</p>
+    <div class="plan-grid">
+      <div><strong>5/2</strong><span>岘港佩尼苏拉酒店</span><b>¥566</b></div><div><strong>5/3</strong><span>岘港佩尼苏拉酒店</span><b>¥641</b></div><div><strong>5/4</strong><span>岘港萨拉海滩酒店</span><b>¥558</b></div><div><strong>5/5</strong><span>岘港萨拉海滩酒店</span><b>¥467</b></div><div><strong>5/6</strong><span>岘港萨拉海滩酒店</span><b>¥467</b></div>
+    </div>
+  </article>
+<article class="plan" data-plan-total="2870">
+    <div class="plan-head">
+      <div>
+        <h3>品牌感后段：2+3 Peninsula + voco</h3>
+        <p>2+3 · 总价 ¥2870 · 均价 ¥574</p>
+      </div>
+    </div>
+    <p class="reason">voco 5/4 后从 1100+ 掉到 500 多，适合想住新一点/IHG 的人；代价是多数房型不含早、取消条件弱。</p>
+    <div class="plan-grid">
+      <div><strong>5/2</strong><span>岘港佩尼苏拉酒店</span><b>¥566</b></div><div><strong>5/3</strong><span>岘港佩尼苏拉酒店</span><b>¥641</b></div><div><strong>5/4</strong><span>voco Ma Belle 岘港</span><b>¥568</b></div><div><strong>5/5</strong><span>voco Ma Belle 岘港</span><b>¥534</b></div><div><strong>5/6</strong><span>voco Ma Belle 岘港</span><b>¥561</b></div>
+    </div>
+  </article>
+<article class="plan" data-plan-total="3428">
+    <div class="plan-head">
+      <div>
+        <h3>套房感路线：1+4 Peninsula + TMS</h3>
+        <p>1+4 · 总价 ¥3428 · 均价 ¥686</p>
+      </div>
+    </div>
+    <p class="reason">5/2 晚到省一点，后 4 晚住 TMS，美溪核心且房型更宽；5/3 会略超 800，但 5 晚均价仍在预算内。</p>
+    <div class="plan-grid">
+      <div><strong>5/2</strong><span>岘港佩尼苏拉酒店</span><b>¥566</b></div><div><strong>5/3</strong><span>岘港 TMS 海滩酒店</span><b>¥863</b></div><div><strong>5/4</strong><span>岘港 TMS 海滩酒店</span><b>¥674</b></div><div><strong>5/5</strong><span>岘港 TMS 海滩酒店</span><b>¥674</b></div><div><strong>5/6</strong><span>岘港 TMS 海滩酒店</span><b>¥651</b></div>
+    </div>
+  </article>
+    </section>
+  </main>
+
+  <script>
+    const active = { category: new Set(), area: new Set(), evidence: new Set() };
+    const rows = [...document.querySelectorAll('#hotelRows tr')];
+    const countText = document.getElementById('countText');
+    function applyFilters() {
+      let visible = 0;
+      for (const row of rows) {
+        const ok = Object.entries(active).every(([key, values]) => !values.size || values.has(row.dataset[key]));
+        row.classList.toggle('hidden', !ok);
+        if (ok) visible += 1;
+      }
+      countText.textContent = visible + ' 家酒店';
+    }
+    document.querySelectorAll('.chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const key = chip.dataset.filter;
+        const value = chip.dataset.value;
+        if (active[key].has(value)) active[key].delete(value);
+        else active[key].add(value);
+        chip.classList.toggle('active');
+        applyFilters();
+      });
+    });
+  </script>
+</body>
+</html>

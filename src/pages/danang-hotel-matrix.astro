@@ -1,12 +1,22 @@
 ---
-import Layout from "../components/Layout.astro";
-import DanangHotelMatrixView from "../components/DanangHotelMatrix.astro";
+import { readFileSync } from "node:fs";
+
+const sourcePath = new URL("../../danang-hotel-matrix-2026-05-v2.html", import.meta.url);
+const sourceHtml = readFileSync(sourcePath, "utf8");
+
+const title = sourceHtml.match(/<title>([\s\S]*?)<\/title>/i)?.[1]?.trim() ?? "岘港酒店矩阵 2026-05";
+const style = sourceHtml.match(/<style>([\s\S]*?)<\/style>/i)?.[1]?.trim() ?? "";
+const body = sourceHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i)?.[1]?.trim() ?? "";
 ---
 
-<Layout
-  title="岘港酒店价格矩阵 | Haoyue Bai"
-  description="一个适合手机和桌面查看的岘港酒店筛选矩阵页面。"
-  locale="zh"
->
-  <DanangHotelMatrixView />
-</Layout>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content="岘港酒店矩阵 2026-05 修订版独立页面。" />
+    <style is:global set:html={style}></style>
+  </head>
+  <body set:html={body}></body>
+</html>
